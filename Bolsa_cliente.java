@@ -9,6 +9,7 @@ public class Bolsa_cliente {
         try {
             System.out.println("Conectando ... ");
             Bolsa bolsa = (Bolsa) Naming.lookup("rmi://" + args[0] + "/" + "Bolsa");
+            BolsaImpl bolsa2 = new BolsaImpl("rmi://25.90.3.122:1099" + "/Bolsa");
             int modo = elegir_modo();
             imprimir_menu(bolsa, modo);
         } catch (Exception e) {
