@@ -6,16 +6,16 @@ import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class hwclient {
     public static void main(String[] args) {
         try (ZContext context = new ZContext()) {
-            System.out.println("Connecting to hello world server");
 
-            // Socket to talk to server
+            // conexion inicial con el servidor
             ZMQ.Socket socket = context.createSocket(SocketType.REQ);
-            // socket.connect("tcp://localhost:5555");
             socket.connect("tcp://25.90.3.122:5555");
+            // creacion de la oferta laboral
             Oferta n = new Oferta("pene inmenso y gordo", "", 2, 2, 2, "");
             byte[] d = serialize(n);
             socket.send(d, 0);
@@ -24,6 +24,29 @@ public class hwclient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Oferta crear_oferta() {
+        Scanner sc = new Scanner(System.in);
+        String titulo, sector, formacion_acade;
+        Integer codigo, experiencia, edad;
+
+        System.out.println("Ingrese el titulo de la oferta");
+        titulo = sc.nextLine();
+        System.out.println("Ingrese el sector de la oferta");
+        sector = sc.nextLine();
+        System.out.println("Ingrese la formacion del aplicante");
+        formacion_acade = sc.nextLine();
+        System.out.println("Ingrese el codigo de la oferta");
+        codigo = sc.nextInt();
+        System.out.println("Ingrese la experiencia del vacante");
+        experiencia = sc.nextInt();
+        System.out.println("Ingrese el titulo de la oferta");
+        edad = sc.nextInt();
+        sc.nextLine();
+
+        Oferta nueva = new Oferta(titulo, sector, codigo, experiencia, edad, formacion_acade);
+        return nueva;
     }
 
     public static byte[] serialize(Object obj) throws IOException {
