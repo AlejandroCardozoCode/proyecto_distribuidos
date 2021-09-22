@@ -16,7 +16,9 @@ public class hwserver {
       while (!Thread.currentThread().isInterrupted()) {
         byte[] reply = socket.recv();
         Oferta ofertaRecivida = (Oferta) deserialize(reply);
-        System.out.println("Received " + ": " + Arrays.toString(reply));
+        System.out.println("-->insercion_oferta--> " + "{" + ofertaRecivida.getTitulo() + "}" + "{"
+            + ofertaRecivida.getSector() + "}" + "{" + ofertaRecivida.getCodigo() + "}" + "{" + ofertaRecivida.getEdad()
+            + "}" + "{" + ofertaRecivida.getExperiencia() + "}" + "{" + ofertaRecivida.getExperiencia() + "}");
         System.out.println(ofertaRecivida.getTitulo());
         String respuesta = "satisfactorio";
         socket.send(respuesta.getBytes(), 0);

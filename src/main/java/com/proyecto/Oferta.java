@@ -20,9 +20,53 @@ public class Oferta extends Object implements Serializable {
         this.edad = edad;
         this.formacion_academica = formacion_academica;
     }
-    public String getTitulo(){
+
+    public String getTitulo() {
         return this.titulo;
     }
 
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getSector() {
+        return this.sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
+    public Integer getCodigo() {
+        return this.codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
+    }
+
+    public Integer getExperiencia() {
+        return this.experiencia;
+    }
+
+    public void setExperiencia(Integer experiencia) {
+        this.experiencia = experiencia;
+    }
+
+    public Integer getEdad() {
+        return this.edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
+    }
+
+    public String getFormacion_academica() {
+        return this.formacion_academica;
+    }
+
+    public void setFormacion_academica(String formacion_academica) {
+        this.formacion_academica = formacion_academica;
+    }
 
 }
