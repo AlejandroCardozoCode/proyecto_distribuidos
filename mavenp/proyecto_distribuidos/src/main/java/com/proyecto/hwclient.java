@@ -20,11 +20,10 @@ public class hwclient {
             for (int requestNbr = 0; requestNbr != 10; requestNbr++) {
                 String request = "Hello";
                 System.out.println("Sending Hello " + requestNbr);
+                socket.send(request.getBytes(ZMQ.CHARSET), 0);
 
-                socket.send(request);
-
-                String reply = socket.recvStr(0);
-                System.out.println("llego: " + reply);
+                byte[] reply = socket.recv(0);
+                System.out.println("Received " + new String(reply, ZMQ.CHARSET) + " " + requestNbr);
             }
         }
     }
