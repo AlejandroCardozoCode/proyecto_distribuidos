@@ -14,7 +14,7 @@ public class Cliente {
             String ip = ip_filtro();
             // conexion inicial con el filtro
             ZMQ.Socket socket = context.createSocket(SocketType.REQ);
-            if (socket.connect("tcp://" + ip + ":5555")) {
+            if (socket.connect("tcp://" + ip + ":2222")) {
                 // creacion de la oferta laboral
                 int opc = 0, opc2 = 0;
                 while (opc != -1) {
