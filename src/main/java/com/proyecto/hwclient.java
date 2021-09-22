@@ -16,7 +16,7 @@ public class hwclient {
             ZMQ.Socket socket = context.createSocket(SocketType.REQ);
             socket.connect("tcp://25.90.3.122:5555");
             // creacion de la oferta laboral
-            Oferta n = new Oferta("pene inmenso y gordo", "", 2, 2, 2, "");
+            Oferta n = crear_oferta();
             byte[] d = serialize(n);
             socket.send(d, 0);
             String respuesta = socket.recvStr(0);
