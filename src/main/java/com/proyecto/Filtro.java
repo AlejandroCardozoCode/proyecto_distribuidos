@@ -18,6 +18,7 @@ public class Filtro {
       ZMQ.Socket socketIngreso = context.createSocket(SocketType.REP);
       ZMQ.Socket socketSalida = context.createSocket(SocketType.REQ);
       socketIngreso.bind("tcp://" + dir + ":5555");
+      socketSalida.connect("tcp://25.90.3.122:555");
       System.out.println("--> Servidor iniciado correctamente direccion ip: " + dir + ":5555");
 
       // el filtro emieza aescuchar las peticiones
@@ -28,7 +29,7 @@ public class Filtro {
 
         // manejo de los datos con el servidor
         byte[] servidor = socketSalida.recv();
-        socketIngreso.send("Satisfactorio");
+        socketIngreso.send(servidor);
 
         /*
          * System.out.println( "--> insercion_oferta--> " + "{ " +
@@ -38,8 +39,6 @@ public class Filtro {
          * " } " + " { " + ofertaRecivida.getExperiencia() + " } "); String respuesta =
          * "satisfactorio"; socket.send(respuesta.getBytes(), 0);
          */
-        String respuesta = "satisfactorio";
-        socketIngreso.send(respuesta.getBytes(), 0);
 
         Thread.sleep(1000);
       }

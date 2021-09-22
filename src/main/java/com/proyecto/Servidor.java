@@ -27,7 +27,8 @@ public class Servidor {
             System.out.println("Ingrese la direccion ip que se le asignara al Servidor: ");
             String dir = sc.nextLine();
             ZMQ.Socket socket = context.createSocket(SocketType.REP);
-            socket.bind("tcp://" + dir + ":5555");
+            // socket.bind("tcp://" + dir + ":5555");
+            socket.bind("tcp://25.90.3.122:5555");
             System.out.println("--> Servidor iniciado correctamente direccion ip: " + dir + ":5555");
 
             // el Servidor emieza aescuchar las peticiones
