@@ -26,6 +26,7 @@
       <scope>test</scope>
     </dependency>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <!--Zeromq-->
     <dependency>
       <groupId>org.zeromq</groupId>
@@ -49,6 +50,8 @@
       <artifactId>emul</artifactId>
       <version>0.54</version>
     </dependency>
+=======
+>>>>>>> parent of e2b7413 (java corriendo)
 =======
 >>>>>>> parent of e2b7413 (java corriendo)
   </dependencies>
