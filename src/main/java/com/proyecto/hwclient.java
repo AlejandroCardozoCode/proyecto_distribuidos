@@ -16,14 +16,51 @@ public class hwclient {
             ZMQ.Socket socket = context.createSocket(SocketType.REQ);
             socket.connect("tcp://25.90.3.122:5555");
             // creacion de la oferta laboral
-            Oferta n = crear_oferta();
-            byte[] d = serialize(n);
-            socket.send(d, 0);
-            String respuesta = socket.recvStr(0);
-            System.out.println(respuesta);
+            int opc = 0, opc2 = 0;
+            while (opc != -1) {
+                opc = impresion_menu();
+                if (opc == 1) {
+                    while (opc2 != -1) {
+                        opc2 = impresion_menu_empleador();
+                        if (opc2 == 1) {
+                            Oferta n = crear_oferta();
+                            byte[] d = serialize(n);
+                            socket.send(d, 0);
+                            String respuesta = socket.recvStr(0);
+                            System.out.println("-->Respuesta del servidor: " + respuesta);
+                        }
+                    }
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Integer impresion_menu() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Menu");
+        System.out.println("1). Ingresar como Empleador");
+        System.out.println("2). Ingresar como Aplicante");
+        System.out.println("3). Salir");
+        Integer opc = sc.nextInt();
+        if (opc == 3) {
+            return -1;
+        }
+        return opc;
+    }
+
+    public static Integer impresion_menu_empleador() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Menu");
+        System.out.println("1). Crear oferta");
+        System.out.println("2). Salir");
+        Integer opc = sc.nextInt();
+        if (opc == 2) {
+            return -1;
+        }
+        return opc;
     }
 
     public static Oferta crear_oferta() {

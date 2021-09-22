@@ -12,13 +12,15 @@ public class hwserver {
       // Socket to talk to clients
       ZMQ.Socket socket = context.createSocket(SocketType.REP);
       socket.bind("tcp://25.90.3.122:5555");
+      System.out.println("--> Servidor iniciado correctamente");
 
       while (!Thread.currentThread().isInterrupted()) {
         byte[] reply = socket.recv();
         Oferta ofertaRecivida = (Oferta) deserialize(reply);
-        System.out.println("-->insercion_oferta--> " + "{" + ofertaRecivida.getTitulo() + "}" + "{"
-            + ofertaRecivida.getSector() + "}" + "{" + ofertaRecivida.getCodigo() + "}" + "{" + ofertaRecivida.getEdad()
-            + "}" + "{" + ofertaRecivida.getExperiencia() + "}" + "{" + ofertaRecivida.getExperiencia() + "}");
+        System.out.println(
+            "-->insercion_oferta--> " + "{ " + ofertaRecivida.getTitulo() + " } " + " { " + ofertaRecivida.getSector()
+                + " } " + " { " + ofertaRecivida.getCodigo() + " } " + " { " + ofertaRecivida.getEdad() + " } " + " { "
+                + ofertaRecivida.getExperiencia() + " } " + " { " + ofertaRecivida.getExperiencia() + " } ");
         System.out.println(ofertaRecivida.getTitulo());
         String respuesta = "satisfactorio";
         socket.send(respuesta.getBytes(), 0);
