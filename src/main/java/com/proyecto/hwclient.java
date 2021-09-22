@@ -27,6 +27,7 @@ public class hwclient {
                             byte[] d = serialize(n);
                             socket.send(d, 0);
                             String respuesta = socket.recvStr(0);
+                            System.out.flush();
                             System.out.println("-->Respuesta del servidor: " + respuesta);
                         }
                     }
@@ -40,6 +41,7 @@ public class hwclient {
 
     public static Integer impresion_menu() {
         Scanner sc = new Scanner(System.in);
+        System.out.flush();
         System.out.println("Menu");
         System.out.println("1). Ingresar como Empleador");
         System.out.println("2). Ingresar como Aplicante");
@@ -53,7 +55,7 @@ public class hwclient {
 
     public static Integer impresion_menu_empleador() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Menu");
+        System.out.println("Menu Empleador");
         System.out.println("1). Crear oferta");
         System.out.println("2). Salir");
         Integer opc = sc.nextInt();
@@ -78,9 +80,10 @@ public class hwclient {
         codigo = sc.nextInt();
         System.out.println("Ingrese la experiencia del vacante");
         experiencia = sc.nextInt();
-        System.out.println("Ingrese el titulo de la oferta");
+        System.out.println("Ingrese la edad del vacante");
         edad = sc.nextInt();
         sc.nextLine();
+        System.out.flush();
 
         Oferta nueva = new Oferta(titulo, sector, codigo, experiencia, edad, formacion_acade);
         return nueva;
