@@ -12,10 +12,10 @@ public class hwserver {
       socket.bind("tcp://*:5555");
 
       while (!Thread.currentThread().isInterrupted()) {
-        byte[] reply = socket.recv(0);
-        System.out.println("Received " + ": [" + new String(reply, ZMQ.CHARSET) + "]");
+        String reply = socket.recvStr(0);
+        System.out.println("Received " + ": " + reply);
         String response = "world";
-        socket.send(response.getBytes(ZMQ.CHARSET), 0);
+        socket.send(response);
         Thread.sleep(1000); // Do some 'work'
       }
     }
