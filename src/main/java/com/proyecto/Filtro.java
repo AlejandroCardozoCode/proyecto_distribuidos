@@ -18,7 +18,7 @@ public class Filtro {
       ZMQ.Socket socketIngreso = context.createSocket(SocketType.REP);
       ZMQ.Socket socketSalida = context.createSocket(SocketType.REQ);
       socketIngreso.bind("tcp://*:5555");
-      socketSalida.connect("tcp://*:3333");
+      socketSalida.connect("tcp://"+dir+":3333");
       System.out.println("--> Filtro iniciado correctamente direccion ip: " + dir + ":5555");
 
       // el filtro emieza aescuchar las peticiones

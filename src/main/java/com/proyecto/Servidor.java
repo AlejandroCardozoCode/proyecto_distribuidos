@@ -14,13 +14,7 @@ public class Servidor {
         try (ZContext context = new ZContext()) {
 
             // creacion del hash donde se almacenaran las ofertas
-            Hashtable<String, String> hash_table = new Hashtable<String, String>();
-            hash_table.put("Titulo", "");
-            hash_table.put("Sector", "");
-            hash_table.put("Codigo", "");
-            hash_table.put("Experiencia", "");
-            hash_table.put("Edad", "");
-            hash_table.put("Formacion", "");
+            Hashtable<String, String> hash_table;
             Vector<Hashtable> vec_hash = new Vector<>();
             // inicializacion del filtro
             Scanner sc = new Scanner(System.in);
@@ -28,13 +22,15 @@ public class Servidor {
             String dir = sc.nextLine();
             ZMQ.Socket socket = context.createSocket(SocketType.REP);
             // socket.bind("tcp://" + dir + ":5555");
-            socket.bind("tcp://*:2222");
+            socket.bind("tcp://"+dir+":2222");
             System.out.println("--> Servidor iniciado correctamente direccion ip: " + dir + ":5555");
 
             // el Servidor emieza aescuchar las peticiones
             while (!Thread.currentThread().isInterrupted()) {
                 byte[] reply = socket.recv();
                 Oferta ofertaRecivida = (Oferta) deserialize(reply);
+
+                hash_table = new Hashtable<String, String>();
                 hash_table.put("Titulo", ofertaRecivida.getTitulo());
                 hash_table.put("Sector", ofertaRecivida.getSector());
                 hash_table.put("Codigo", String.valueOf(ofertaRecivida.getCodigo()));

@@ -58,7 +58,7 @@ public class Cliente {
         } else if (opc == 1) {
             ip = "25.90.3.122";
         } else if (opc == 2) {
-            ip = "1.1.1.1";
+            ip = "25.90.9.233";
         }
 
         return ip;
