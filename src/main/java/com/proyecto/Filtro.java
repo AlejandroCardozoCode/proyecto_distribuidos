@@ -15,7 +15,8 @@ public class Filtro {
       Scanner sc = new Scanner(System.in);
       ZMQ.Socket socketCliente = context.createSocket(SocketType.REP);
       ZMQ.Socket socketServidor = context.createSocket(SocketType.REQ);
-      // el Filtro se aloja en el puerto 
+      ZMQ.Socket socketServidor2 = context.createSocket(SocketType.REQ);
+      // el Filtro se aloja en el puerto
       socketCliente.bind("tcp://*:2222");
       // el servidor de aloja en los puertos :3333
       socketServidor.connect("tcp://25.90.9.233:3333");
@@ -24,7 +25,7 @@ public class Filtro {
 
       // el filtro emieza aescuchar las peticiones
       while (!Thread.currentThread().isInterrupted()) {
-        byte [] respuestasServidor;
+        byte[] respuestasServidor;
         Integer tamano1, tamano2, tamano3;
         // manejo de la solicitud del cliente
         byte[] peticionCliente = socketCliente.recv();
@@ -35,33 +36,29 @@ public class Filtro {
         // respuesta del servidor con el numero de ofertas guardadas
         respuestasServidor = socketServidor.recv();
         tamano1 = -1;
-        if(deserialize(servidor) instanceof Integer)
-        {
-          tamano1 = (Integer)deserialize(servidor); 
+        if (deserialize(respuestasServidor) instanceof Integer) {
+          tamano1 = (Integer) deserialize(respuestasServidor);
           System.out.println("el servidor tiene en total " + String.valueOf(tamano1) + " ofertas");
         }
 
-        // peticion de ofertas alojadas en el servidor 2 
+        // peticion de ofertas alojadas en el servidor 2
         socketServidor2.send(serialize(peticion));
         // respuesta del servidor con el numero de ofertas guardadas
         respuestasServidor = socketServidor2.recv();
         tamano2 = -1;
-        if(deserialize(servidor) instanceof Integer)
-        {
-          tamano1 = (Integer)deserialize(servidor); 
+        if (deserialize(respuestasServidor) instanceof Integer) {
+          tamano1 = (Integer) deserialize(respuestasServidor);
           System.out.println("el servidor tiene en total " + String.valueOf(tamano1) + " ofertas");
         }
 
-        if(tamano1 == Math.min(Math.min(tamano1,tamano2 ),tamano3))
-        {
+        if (tamano1 == Math.min(tamano1, tamano2)) {
           socketServidor.send(peticionCliente);
 
           // manejo de los datos con el servidor
           byte[] servidor = socketServidor.recv();
           socketCliente.send(servidor);
         }
-        if(tamano2 == Math.min(Math.min(tamano1,tamano2 ),tamano3))
-        {
+        if (tamano2 == Math.min(tamano1, tamano2)) {
           socketServidor2.send(peticionCliente);
 
           // manejo de los datos con el servidor
@@ -69,49 +66,45 @@ public class Filtro {
           socketCliente.send(servidor);
         }
 
-/*
-        // peticion de ofertas alojadas en el servidor3 
-        socketServidor.send(serialize(peticion));
-        // respuesta del servidor con el numero de ofertas guardadas
-        byte[] servidor = socketServidor.recv();
-        tamano3 = -1;
-        if(deserialize(servidor) instanceof Integer)
-        {
-          tamano1 = (Integer)deserialize(servidor); 
-          System.out.println("el servidor tiene en total " + String.valueOf(tamano1) + " ofertas");
-        }
-
-*/
+        /*
+         * // peticion de ofertas alojadas en el servidor3
+         * socketServidor.send(serialize(peticion)); // respuesta del servidor con el
+         * numero de ofertas guardadas byte[] servidor = socketServidor.recv(); tamano3
+         * = -1; if(deserialize(servidor) instanceof Integer) { tamano1 =
+         * (Integer)deserialize(servidor);
+         * System.out.println("el servidor tiene en total " + String.valueOf(tamano1) +
+         * " ofertas"); }
+         * 
+         */
         String respuesta = "test";
         socketCliente.send(respuesta);
 
-
         /*
-        socketServidor.send(peticionCliente);
-
-        // manejo de los datos con el servidor
-        byte[] servidor = socketServidor.recv();
-        socketCliente.send(servidor);
-        */
+         * socketServidor.send(peticionCliente);
+         * 
+         * // manejo de los datos con el servidor byte[] servidor =
+         * socketServidor.recv(); socketCliente.send(servidor);
+         */
 
         Thread.sleep(1000);
       }
     }
   }
-    public static byte[] serialize(Object obj) throws IOException {
-        try (ByteArrayOutputStream b = new ByteArrayOutputStream()) {
-            try (ObjectOutputStream o = new ObjectOutputStream(b)) {
-                o.writeObject(obj);
-            }
-            return b.toByteArray();
-        }
-    }
 
-    public static Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
-        try (ByteArrayInputStream b = new ByteArrayInputStream(bytes)) {
-            try (ObjectInputStream o = new ObjectInputStream(b)) {
-                return o.readObject();
-            }
-        }
+  public static byte[] serialize(Object obj) throws IOException {
+    try (ByteArrayOutputStream b = new ByteArrayOutputStream()) {
+      try (ObjectOutputStream o = new ObjectOutputStream(b)) {
+        o.writeObject(obj);
+      }
+      return b.toByteArray();
     }
+  }
+
+  public static Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
+    try (ByteArrayInputStream b = new ByteArrayInputStream(bytes)) {
+      try (ObjectInputStream o = new ObjectInputStream(b)) {
+        return o.readObject();
+      }
+    }
+  }
 }
