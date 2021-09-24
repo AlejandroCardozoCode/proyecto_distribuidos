@@ -21,7 +21,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.Servidor">
+  <component name="RunManager" selected="Application.Filtro">
     <configuration name="Filtro" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.proyecto.Filtro" />
       <module name="proyecto_distribuidos" />
@@ -76,6 +76,7 @@
       <updated>1632352900229</updated>
       <workItem from="1632352901436" duration="2559000" />
       <workItem from="1632412663709" duration="14000" />
+      <workItem from="1632436981722" duration="6792000" />
     </task>
     <servers />
   </component>
