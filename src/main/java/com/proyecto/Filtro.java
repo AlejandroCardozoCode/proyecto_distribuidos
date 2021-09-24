@@ -16,11 +16,13 @@ public class Filtro {
       ZMQ.Socket socketCliente = context.createSocket(SocketType.REP);
       ZMQ.Socket socketServidor = context.createSocket(SocketType.REQ);
       ZMQ.Socket socketServidor2 = context.createSocket(SocketType.REQ);
+      ZMQ.Socket socketServidor3 = context.createSocket(SocketType.REQ);
       // el Filtro se aloja en el puerto
       socketCliente.bind("tcp://*:2222");
       // el servidor de aloja en los puertos :3333
       socketServidor.connect("tcp://25.90.9.233:3333");
       socketServidor2.connect("tcp://25.90.3.122:3333");
+      socketServidor3.connect("tcp://25.0.147.102:3333");
       System.out.println("--> Filtro iniciado correctamente");
 
       // el filtro emieza aescuchar las peticiones
@@ -47,22 +49,50 @@ public class Filtro {
         respuestasServidor = socketServidor2.recv();
         tamano2 = -1;
         if (deserialize(respuestasServidor) instanceof Integer) {
-          tamano1 = (Integer) deserialize(respuestasServidor);
-          System.out.println("el servidor 2 tiene en total " + String.valueOf(tamano1) + " ofertas");
+          tamano2 = (Integer) deserialize(respuestasServidor);
+          System.out.println("el servidor 2 tiene en total " + String.valueOf(tamano2) + " ofertas");
         }
 
-        if (tamano1 < tamano2) {
+        // peticion de ofertas alojadas en el servidor 3
+        socketServidor3.send(serialize(peticion));
+        // respuesta del servidor con el numero de ofertas guardadas
+        respuestasServidor = socketServidor3.recv();
+        tamano3 = -1;
+        if (deserialize(respuestasServidor) instanceof Integer) {
+          tamano3 = (Integer) deserialize(respuestasServidor);
+          System.out.println("el servidor 3 tiene en total " + String.valueOf(tamano2) + " ofertas");
+        }
+
+        if (tamano1 == Math.min(Math.min(tamano1, tamano2), tamano3)) {
+          System.out.println("-->se enviara la oferta a el servidor 1");
           socketServidor.send(peticionCliente);
 
           // manejo de los datos con el servidor
           byte[] servidor = socketServidor.recv();
           socketCliente.send(servidor);
         }
-        if (tamano2 < tamano1) {
+        else if (tamano2 == Math.min(Math.min(tamano1, tamano2), tamano3)) {
+          System.out.println("-->se enviara la oferta a el servidor 2");
           socketServidor2.send(peticionCliente);
 
           // manejo de los datos con el servidor
           byte[] servidor = socketServidor2.recv();
+          socketCliente.send(servidor);
+        }
+        else if (tamano3 == Math.min(Math.min(tamano1, tamano2), tamano3)) {
+          System.out.println("-->se enviara la oferta a el servidor 3");
+          socketServidor3.send(peticionCliente);
+
+          // manejo de los datos con el servidor
+          byte[] servidor = socketServidor3.recv();
+          socketCliente.send(servidor);
+        }
+        else{
+          System.out.println("-->se enviara la oferta a el servidor 1");
+          socketServidor.send(peticionCliente);
+
+          // manejo de los datos con el servidor
+          byte[] servidor = socketServidor.recv();
           socketCliente.send(servidor);
         }
 

@@ -28,17 +28,14 @@ public class Servidor {
                 byte[] peticion = socket.recv();
                 if(deserialize(peticion) instanceof  String){
                     String aux = (String)deserialize(peticion);
-                    System.out.println(aux);
-                    System.out.print("llego una solicitud de peticion de datos");
                     if(aux.equals("numeroSolicitudes"))
                     {
-                        System.out.println("entro al if");
                         Integer tamano = vec_hash.size();
                         socket.send(serialize(tamano));
                     }
                 }
                 else if(deserialize(peticion) instanceof  Oferta){
-                    System.out.println("llego una nueva oferta");
+                    System.out.println("-->llego una nueva oferta");
                     Oferta ofertaRecivida = (Oferta) deserialize(peticion);
 
                     hash_table = new Hashtable<String, String>();
