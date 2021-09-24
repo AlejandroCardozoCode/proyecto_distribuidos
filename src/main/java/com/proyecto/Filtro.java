@@ -38,7 +38,7 @@ public class Filtro {
         tamano1 = -1;
         if (deserialize(respuestasServidor) instanceof Integer) {
           tamano1 = (Integer) deserialize(respuestasServidor);
-          System.out.println("el servidor tiene en total " + String.valueOf(tamano1) + " ofertas");
+          System.out.println("el servidor 1 tiene en total " + String.valueOf(tamano1) + " ofertas");
         }
 
         // peticion de ofertas alojadas en el servidor 2
@@ -48,17 +48,17 @@ public class Filtro {
         tamano2 = -1;
         if (deserialize(respuestasServidor) instanceof Integer) {
           tamano1 = (Integer) deserialize(respuestasServidor);
-          System.out.println("el servidor tiene en total " + String.valueOf(tamano1) + " ofertas");
+          System.out.println("el servidor 2 tiene en total " + String.valueOf(tamano1) + " ofertas");
         }
 
-        if (tamano1 == Math.min(tamano1, tamano2)) {
+        if (tamano1 < tamano2) {
           socketServidor.send(peticionCliente);
 
           // manejo de los datos con el servidor
           byte[] servidor = socketServidor.recv();
           socketCliente.send(servidor);
         }
-        if (tamano2 == Math.min(tamano1, tamano2)) {
+        if (tamano2 < tamano1) {
           socketServidor2.send(peticionCliente);
 
           // manejo de los datos con el servidor
@@ -76,9 +76,6 @@ public class Filtro {
          * " ofertas"); }
          * 
          */
-        String respuesta = "test";
-        socketCliente.send(respuesta);
-
         /*
          * socketServidor.send(peticionCliente);
          * 
