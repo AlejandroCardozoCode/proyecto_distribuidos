@@ -39,7 +39,7 @@ public class Filtro {
         tamano1 = -1;
         if (deserialize(respuestasServidor) instanceof Integer) {
           tamano1 = (Integer) deserialize(respuestasServidor);
-          System.out.println("el servidor 1 tiene en total " + String.valueOf(tamano1) + " ofertas");
+          System.out.println("INFO: el servidor 1 tiene en total " + String.valueOf(tamano1) + " ofertas");
         }
 
         // peticion de ofertas alojadas en el servidor 2
@@ -49,7 +49,7 @@ public class Filtro {
         tamano2 = -1;
         if (deserialize(respuestasServidor) instanceof Integer) {
           tamano2 = (Integer) deserialize(respuestasServidor);
-          System.out.println("el servidor 2 tiene en total " + String.valueOf(tamano2) + " ofertas");
+          System.out.println("INFO: el servidor 2 tiene en total " + String.valueOf(tamano2) + " ofertas");
         }
 
         // peticion de ofertas alojadas en el servidor 3
@@ -59,27 +59,27 @@ public class Filtro {
         tamano3 = -1;
         if (deserialize(respuestasServidor) instanceof Integer) {
           tamano3 = (Integer) deserialize(respuestasServidor);
-          System.out.println("el servidor 3 tiene en total " + String.valueOf(tamano2) + " ofertas");
+          System.out.println("INFO: el servidor 3 tiene en total " + String.valueOf(tamano2) + " ofertas");
         }
 
         // clasificacion de segun las respuestas del servidor
         if (tamano1 == Math.min(Math.min(tamano1, tamano2), tamano3)) {
-          System.out.println("-->se enviara la oferta a el servidor 1");
+          System.out.println("INFO: se enviara la oferta a el servidor 1");
           socketServidor.send(peticionCliente);
           byte[] servidor = socketServidor.recv();
           socketCliente.send(servidor);
         } else if (tamano2 == Math.min(Math.min(tamano1, tamano2), tamano3)) {
-          System.out.println("-->se enviara la oferta a el servidor 2");
+          System.out.println("INFO: se enviara la oferta a el servidor 2");
           socketServidor2.send(peticionCliente);
           byte[] servidor = socketServidor2.recv();
           socketCliente.send(servidor);
         } else if (tamano3 == Math.min(Math.min(tamano1, tamano2), tamano3)) {
-          System.out.println("-->se enviara la oferta a el servidor 3");
+          System.out.println("INFO: se enviara la oferta a el servidor 3");
           socketServidor3.send(peticionCliente);
           byte[] servidor = socketServidor3.recv();
           socketCliente.send(servidor);
         } else {
-          System.out.println("-->se enviara la oferta a el servidor 1");
+          System.out.println("INFO: se enviara la oferta a el servidor 1");
           socketServidor.send(peticionCliente);
 
           // envio de respuesta a el cliente

@@ -21,7 +21,7 @@ public class Servidor {
             ZMQ.Socket socket = context.createSocket(SocketType.REP);
             // gestion de conexiones del servidor
             socket.bind("tcp://*:3333");
-            System.out.println("--> Servidor iniciado correctamente");
+            System.out.println("INFO: Servidor iniciado correctamente");
 
             // el Servidor emieza aescuchar las peticiones
             while (!Thread.currentThread().isInterrupted()) {
@@ -37,7 +37,7 @@ public class Servidor {
                 }
                 // si la peticion es para almacenar una oferta en la tabla hash
                 else if (deserialize(peticion) instanceof Oferta) {
-                    System.out.println("-->llego una nueva oferta");
+                    System.out.println("INFO: llego una nueva oferta");
                     Oferta ofertaRecivida = (Oferta) deserialize(peticion);
 
                     hash_table = new Hashtable<String, String>();
