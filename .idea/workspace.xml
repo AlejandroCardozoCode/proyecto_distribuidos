@@ -22,6 +22,19 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunManager" selected="Application.Servidor">
+    <configuration name="Cliente" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.proyecto.Cliente" />
+      <module name="proyecto_distribuidos" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.proyecto.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Filtro" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.proyecto.Filtro" />
       <module name="proyecto_distribuidos" />
@@ -61,8 +74,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Servidor" />
         <item itemvalue="Application.Filtro" />
+        <item itemvalue="Application.Servidor" />
+        <item itemvalue="Application.Cliente" />
       </list>
     </recent_temporary>
   </component>
@@ -79,6 +93,7 @@
       <workItem from="1632436981722" duration="10154000" />
       <workItem from="1632512234597" duration="73000" />
       <workItem from="1632753215220" duration="484000" />
+      <workItem from="1636225042200" duration="2009000" />
     </task>
     <servers />
   </component>

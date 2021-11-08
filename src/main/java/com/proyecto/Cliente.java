@@ -284,7 +284,6 @@ public class Cliente {
         System.out.flush();
 
         Oferta nueva = new Oferta(titulo, sector, codigo, experiencia, edad, formacion_acade);
-        System.out.println("el codigo de la oferta generada es: " + codigo);
         return nueva;
     }
 

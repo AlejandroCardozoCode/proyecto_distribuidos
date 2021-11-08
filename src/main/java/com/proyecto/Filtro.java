@@ -19,10 +19,10 @@ public class Filtro {
       ZMQ.Socket socketServidor3 = context.createSocket(SocketType.REQ);
       // gestion de conexiones del filtro con los otros servidore y el cliente
       socketCliente.bind("tcp://*:2222");
-      socketServidor.connect("tcp://25.90.9.233:3333");
-      socketServidor2.connect("tcp://25.90.3.122:3333");
-      socketServidor3.connect("tcp://25.0.147.102:3333");
-      System.out.println("--> Filtro iniciado correctamente");
+      socketServidor2.connect("tcp://25.90.9.233:3333"); //estiben
+      socketServidor.connect("tcp://25.90.3.122:3333"); //PC
+      socketServidor3.connect("tcp://25.0.147.102:3333"); //portatil
+      System.out.println("INFO: Filtro iniciado correctamente");
 
       // el filtro emieza aescuchar las peticiones
       while (!Thread.currentThread().isInterrupted()) {
@@ -32,60 +32,78 @@ public class Filtro {
         byte[] peticionCliente = socketCliente.recv();
         String peticion = "numeroSolicitudes";
 
-        // peticion de ofertas alojadas en el servidor 1
-        socketServidor.send(serialize(peticion));
-        // respuesta del servidor con el numero de ofertas guardadas
-        respuestasServidor = socketServidor.recv();
-        tamano1 = -1;
-        if (deserialize(respuestasServidor) instanceof Integer) {
-          tamano1 = (Integer) deserialize(respuestasServidor);
-          System.out.println("INFO: el servidor 1 tiene en total " + String.valueOf(tamano1) + " ofertas");
+        if (deserialize(peticionCliente) instanceof Oferta) {
+          System.out.println("INFO: llego una nueva oferta al filtro");
+          Oferta oferta_actual = (Oferta) deserialize(peticionCliente);
+          String sector = oferta_actual.getSector();
+          if (sector.equals("Directores y Agentes") || sector.equals("Profesionales, Cientificos y Intelectuales")){
+            System.out.println("INFO: oferta en el sector -> "+  sector);
+            System.out.println("INFO: se enviara la oferta al servidor 1");
+            socketServidor.send(peticionCliente);
+            byte[] servidor = socketServidor.recv();
+            socketCliente.send(servidor);
+          }
+
+          else if (sector.equals("Tecnicos y profesionales") || sector.equals("Personal de Apoyo Administrativo")) {
+            System.out.println("INFO: se enviara la oferta al servidor 2");
+            socketServidor2.send(peticionCliente);
+            byte[] servidor = socketServidor2.recv();
+            socketCliente.send(servidor);
+          }
+
+          else if (sector.equals("Vendedor de Comercios")){
+            System.out.println("INFO: se enviara la oferta al servidor 3");
+            socketServidor3.send(peticionCliente);
+            byte[] servidor = socketServidor3.recv();
+            socketCliente.send(servidor);
+          }
         }
 
-        // peticion de ofertas alojadas en el servidor 2
-        socketServidor2.send(serialize(peticion));
-        // respuesta del servidor con el numero de ofertas guardadas
-        respuestasServidor = socketServidor2.recv();
-        tamano2 = -1;
-        if (deserialize(respuestasServidor) instanceof Integer) {
-          tamano2 = (Integer) deserialize(respuestasServidor);
-          System.out.println("INFO: el servidor 2 tiene en total " + String.valueOf(tamano2) + " ofertas");
-        }
-
-        // peticion de ofertas alojadas en el servidor 3
-        socketServidor3.send(serialize(peticion));
-        // respuesta del servidor con el numero de ofertas guardadas
-        respuestasServidor = socketServidor3.recv();
-        tamano3 = -1;
-        if (deserialize(respuestasServidor) instanceof Integer) {
-          tamano3 = (Integer) deserialize(respuestasServidor);
-          System.out.println("INFO: el servidor 3 tiene en total " + String.valueOf(tamano2) + " ofertas");
-        }
-
-        // clasificacion de segun las respuestas del servidor
-        if (tamano1 == Math.min(Math.min(tamano1, tamano2), tamano3)) {
-          System.out.println("INFO: se enviara la oferta a el servidor 1");
-          socketServidor.send(peticionCliente);
-          byte[] servidor = socketServidor.recv();
-          socketCliente.send(servidor);
-        } else if (tamano2 == Math.min(Math.min(tamano1, tamano2), tamano3)) {
-          System.out.println("INFO: se enviara la oferta a el servidor 2");
-          socketServidor2.send(peticionCliente);
-          byte[] servidor = socketServidor2.recv();
-          socketCliente.send(servidor);
-        } else if (tamano3 == Math.min(Math.min(tamano1, tamano2), tamano3)) {
-          System.out.println("INFO: se enviara la oferta a el servidor 3");
-          socketServidor3.send(peticionCliente);
-          byte[] servidor = socketServidor3.recv();
-          socketCliente.send(servidor);
-        } else {
-          System.out.println("INFO: se enviara la oferta a el servidor 1");
-          socketServidor.send(peticionCliente);
-
-          // envio de respuesta a el cliente
-          byte[] servidor = socketServidor.recv();
-          socketCliente.send(servidor);
-        }
+        /*
+         * 
+         * // peticion de ofertas alojadas en el servidor 1
+         * socketServidor.send(serialize(peticion)); // respuesta del servidor con el
+         * numero de ofertas guardadas respuestasServidor = socketServidor.recv();
+         * tamano1 = -1; if (deserialize(respuestasServidor) instanceof Integer) {
+         * tamano1 = (Integer) deserialize(respuestasServidor);
+         * System.out.println("INFO: el servidor 1 tiene en total " +
+         * String.valueOf(tamano1) + " ofertas"); }
+         * 
+         * // peticion de ofertas alojadas en el servidor 2
+         * socketServidor2.send(serialize(peticion)); // respuesta del servidor con el
+         * numero de ofertas guardadas respuestasServidor = socketServidor2.recv();
+         * tamano2 = -1; if (deserialize(respuestasServidor) instanceof Integer) {
+         * tamano2 = (Integer) deserialize(respuestasServidor);
+         * System.out.println("INFO: el servidor 2 tiene en total " +
+         * String.valueOf(tamano2) + " ofertas"); }
+         * 
+         * // peticion de ofertas alojadas en el servidor 3
+         * socketServidor3.send(serialize(peticion)); // respuesta del servidor con el
+         * numero de ofertas guardadas respuestasServidor = socketServidor3.recv();
+         * tamano3 = -1; if (deserialize(respuestasServidor) instanceof Integer) {
+         * tamano3 = (Integer) deserialize(respuestasServidor);
+         * System.out.println("INFO: el servidor 3 tiene en total " +
+         * String.valueOf(tamano2) + " ofertas"); }
+         * 
+         * // clasificacion de segun las respuestas del servidor if (tamano1 ==
+         * Math.min(Math.min(tamano1, tamano2), tamano3)) {
+         * System.out.println("INFO: se enviara la oferta a el servidor 1");
+         * socketServidor.send(peticionCliente); byte[] servidor =
+         * socketServidor.recv(); socketCliente.send(servidor); } else if (tamano2 ==
+         * Math.min(Math.min(tamano1, tamano2), tamano3)) {
+         * System.out.println("INFO: se enviara la oferta a el servidor 2");
+         * socketServidor2.send(peticionCliente); byte[] servidor =
+         * socketServidor2.recv(); socketCliente.send(servidor); } else if (tamano3 ==
+         * Math.min(Math.min(tamano1, tamano2), tamano3)) {
+         * System.out.println("INFO: se enviara la oferta a el servidor 3");
+         * socketServidor3.send(peticionCliente); byte[] servidor =
+         * socketServidor3.recv(); socketCliente.send(servidor); } else {
+         * System.out.println("INFO: se enviara la oferta a el servidor 1");
+         * socketServidor.send(peticionCliente);
+         * 
+         * // envio de respuesta a el cliente byte[] servidor = socketServidor.recv();
+         * socketCliente.send(servidor); }
+         */
 
         Thread.sleep(1000);
       }
