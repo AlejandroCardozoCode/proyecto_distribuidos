@@ -19,6 +19,8 @@ public class Servidor {
             // inicializacion del filtro
             Scanner sc = new Scanner(System.in);
             ZMQ.Socket socket = context.createSocket(SocketType.REP);
+            // crear socket del publicador
+            ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
             // gestion de conexiones del servidor
             socket.bind("tcp://*:3333");
             System.out.println("INFO: Servidor iniciado correctamente");
@@ -58,6 +60,16 @@ public class Servidor {
 
             }
         }
+    }
+
+    public static void enviarNotificacion(Oferta oferta, ZMQ.Socket publisher) {
+        int zipcode = oferta.getSectorCodigo();
+        String sector = oferta.getSector();
+        String expe = String.valueOf(oferta.getExperiencia());
+        String edad = String.valueOf(oferta.getEdad());
+
+        String mensaje = String.valueOf(zipcode) + " " + sector + " " + expe + " " + edad;
+        publisher.send(mensaje, 0);
     }
 
     public static byte[] serialize(Object obj) throws IOException {

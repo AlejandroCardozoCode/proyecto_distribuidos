@@ -7,7 +7,9 @@ import org.zeromq.ZMQ;
 import java.util.concurrent.ThreadLocalRandom;
 
 import java.io.*;
+import java.nio.channels.spi.AsynchronousChannelProvider;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.util.UUID;
 import com.proyecto.*;
 
@@ -17,6 +19,8 @@ public class Cliente {
             String ip = ip_filtro();
             // conexion inicial con el filtro
             ZMQ.Socket socket = context.createSocket(SocketType.REQ);
+            ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
+            subscriber.connect("tcp://" + ip + ":5556");
             if (socket.connect("tcp://" + ip + ":2222")) {
                 // creacion de la oferta laboral
                 int opc = 0, opc2 = 0;
@@ -51,6 +55,9 @@ public class Cliente {
                                 asignar_sectores(aspirante);
                                 System.out.println(aspirante.toString());
                             }
+                            if (opc2 == 3) {
+                                notificaciones(subscriber, aspirante.getSector1(), aspirante.getSector2(), aspirante);
+                            }
 
                         }
                         opc2 = 0;
@@ -68,6 +75,52 @@ public class Cliente {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void notificaciones(ZMQ.Socket subscriber, Integer sector1, Integer sector2, Aspirante aspirante) {
+        String filter = String.valueOf(sector1);
+        String filter2 = String.valueOf(sector2);
+        // Se suscribe con codigo especial que le permitira filtar los
+
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            subscriber.subscribe(filter.getBytes(ZMQ.CHARSET));
+            String string = subscriber.recvStr(0).trim();
+            int contador = 0;
+            if (!string.isEmpty()) {
+                System.out.println("INFO: llego una nueva oferta de trabajo");
+                contador++;
+            }
+
+            StringTokenizer sscanf = new StringTokenizer(string, " ");
+            String titulo = sscanf.nextToken();
+            String sector = sscanf.nextToken();
+            String expe = sscanf.nextToken();
+            String edad = sscanf.nextToken();
+
+            if (aspirante.getEdad() == Integer.valueOf(edad)
+                    && aspirante.getAnios_experiencia() == Integer.valueOf(expe)) {
+                System.out.println("-------------------------------------");
+                System.out.println("Titulo de oferta: " + titulo);
+                System.out.println("Sector: " + sector);
+                System.out.println("Experiencia: " + expe);
+                System.out.println("Edad: " + edad);
+                System.out.println("-------------------------------------");
+                System.out.println("Desea aceptar esta oferta? (si = s, no = n, salir = e): ");
+                String respuesta = sc.nextLine();
+
+                if (respuesta.equals("s")) {
+                    System.out.println("INFO: Oferta aceptada");
+                }
+                if (respuesta.equals("n")) {
+                    System.out.println("INFO: Oferta rechazada");
+                }
+
+                if (respuesta.equals("e")) {
+                    return;
+                }
+            }
         }
     }
 
@@ -141,9 +194,9 @@ public class Cliente {
     public static void asignar_sectores(Aspirante aspirante) {
         aspirante.toString();
         Integer sectorId;
-        String sector, sector2;
-        sector = "";
-        sector2 = "";
+        Integer sector, sector2;
+        sector = 0;
+        sector2 = 0;
         Scanner sc = new Scanner(System.in);
         System.out.println("1). Directores y Agentes");
         System.out.println("2). Profesionales, Cientificos y Intelectuales");
@@ -157,15 +210,15 @@ public class Cliente {
             System.out.println("Valor ingresado invalido");
             return;
         } else if (sectorId == 1) {
-            sector = "Directores y Agentes";
+            sector = 10001;
         } else if (sectorId == 2) {
-            sector = "Profesionales, Cientificos y Intelectuales";
+            sector = 10002;
         } else if (sectorId == 3) {
-            sector = "Tecnicos y Profesionales";
+            sector = 10003;
         } else if (sectorId == 4) {
-            sector = "Personal de Apoyo Administrativo";
+            sector = 10004;
         } else if (sectorId == 5) {
-            sector = "Vendedor de Comercios";
+            sector = 10005;
         }
         System.out.println("Ingrese el sector 2 al que se quiere suscribir");
         sectorId = sc.nextInt();
@@ -173,15 +226,15 @@ public class Cliente {
             System.out.println("Valor ingresado invalido");
             return;
         } else if (sectorId == 1) {
-            sector2 = "Directores y Agentes";
+            sector2 = 10001;
         } else if (sectorId == 2) {
-            sector2 = "Profesionales, Cientificos y Intelectuales";
+            sector2 = 10002;
         } else if (sectorId == 3) {
-            sector2 = "Tecnicos y Profesionales";
+            sector2 = 10003;
         } else if (sectorId == 4) {
-            sector2 = "Personal de Apoyo Administrativo";
+            sector2 = 10004;
         } else if (sectorId == 5) {
-            sector2 = "Vendedor de Comercios";
+            sector2 = 10005;
         }
         sc.nextLine();
 
@@ -221,8 +274,8 @@ public class Cliente {
         aspiratne.setAnios_experiencia(experiencia);
         aspiratne.setEdad(edad);
         aspiratne.setFormacion(formacion_acade);
-        aspiratne.setSector1("");
-        aspiratne.setSector2("");
+        aspiratne.setSector1(0);
+        aspiratne.setSector2(0);
         return aspiratne;
     }
 
@@ -231,7 +284,7 @@ public class Cliente {
         System.out.print("\033[H\033[2J");
         System.out.flush();
         String titulo, sector = "", formacion_acade, codigo;
-        Integer experiencia, edad, sectorId, formacion_id;
+        Integer experiencia, edad, sectorId, formacion_id, sectorCodigo = 0;
 
         System.out.println("Ingrese el titulo de la oferta");
         titulo = sc.nextLine();
@@ -247,14 +300,19 @@ public class Cliente {
             return null;
         } else if (sectorId == 1) {
             sector = "Directores y Agentes";
+            sectorCodigo = 10001;
         } else if (sectorId == 2) {
             sector = "Profesionales, Cientificos y Intelectuales";
+            sectorCodigo = 10002;
         } else if (sectorId == 3) {
             sector = "Tecnicos y Profesionales";
+            sectorCodigo = 10003;
         } else if (sectorId == 4) {
             sector = "Personal de Apoyo Administrativo";
+            sectorCodigo = 10004;
         } else if (sectorId == 5) {
             sector = "Vendedor de Comercios";
+            sectorCodigo = 10005;
         }
 
         sc.nextLine();
@@ -283,7 +341,7 @@ public class Cliente {
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
-        Oferta nueva = new Oferta(titulo, sector, codigo, experiencia, edad, formacion_acade);
+        Oferta nueva = new Oferta(titulo, sector, codigo, experiencia, edad, formacion_acade, sectorCodigo);
         return nueva;
     }
 

@@ -6,13 +6,13 @@ public class Aspirante {
     Integer anios_experiencia;
     Integer edad;
     String formacion;
-    String sector1;
-    String sector2;
+    Integer sector1;
+    Integer sector2;
 
     public Aspirante() {
     }
 
-    public Aspirante(Integer anios_experiencia, Integer edad, String formacion, String sector1, String sector2) {
+    public Aspirante(Integer anios_experiencia, Integer edad, String formacion, Integer sector1, Integer sector2) {
         this.anios_experiencia = anios_experiencia;
         this.edad = edad;
         this.formacion = formacion;
@@ -59,19 +59,19 @@ public class Aspirante {
         return this;
     }
 
-    public String getSector1() {
+    public Integer getSector1() {
         return this.sector1;
     }
 
-    public void setSector1(String sector1) {
+    public void setSector1(Integer sector1) {
         this.sector1 = sector1;
     }
 
-    public String getSector2() {
+    public Integer getSector2() {
         return this.sector2;
     }
 
-    public void setSector2(String sector2) {
+    public void setSector2(Integer sector2) {
         this.sector2 = sector2;
     }
 

@@ -10,19 +10,29 @@ public class Oferta extends Object implements Serializable {
     private Integer experiencia;
     private Integer edad;
     private String formacion_academica;
+    private Integer sectorCodigo;
 
     public Oferta(String titulo, String sector, String codigo, Integer experiencia, Integer edad,
-            String formacion_academica) {
+            String formacion_academica, Integer sectorCodigo) {
         this.titulo = titulo;
         this.sector = sector;
         this.codigo = codigo;
         this.experiencia = experiencia;
         this.edad = edad;
         this.formacion_academica = formacion_academica;
+        this.sectorCodigo = sectorCodigo;
     }
 
     public String getTitulo() {
         return this.titulo;
+    }
+
+    public Integer getSectorCodigo() {
+        return this.sectorCodigo;
+    }
+
+    public void setSectorCodigo(Integer sectorCodigo) {
+        this.sectorCodigo = sectorCodigo;
     }
 
     public void setTitulo(String titulo) {

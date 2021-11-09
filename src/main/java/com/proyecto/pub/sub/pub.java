@@ -14,7 +14,6 @@ public class pub {
         try (ZContext context = new ZContext()) {
             ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
             publisher.bind("tcp://*:5556");
-            publisher.bind("ipc://weather");
 
             while (!Thread.currentThread().isInterrupted()) {
 
