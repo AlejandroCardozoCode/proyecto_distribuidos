@@ -23,6 +23,8 @@ public class Servidor {
             ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
             // gestion de conexiones del servidor
             socket.bind("tcp://*:3333");
+            publisher.bind("tcp://*:5556");
+            publisher.setSendTimeOut(200);
             System.out.println("INFO: Servidor iniciado correctamente");
 
             // el Servidor emieza aescuchar las peticiones
@@ -50,13 +52,12 @@ public class Servidor {
                     hash_table.put("Edad", String.valueOf(ofertaRecivida.getEdad()));
                     hash_table.put("Formacion", ofertaRecivida.getFormacion_academica());
                     vec_hash.add(hash_table);
-                    enviarNotificacion(ofertaRecivida,publisher);
 
                     // envio de respuesta a el filtro
                     String respuesta = "satisfactorio";
                     socket.send(respuesta.getBytes(), 0);
+                    enviarNotificacion(ofertaRecivida, publisher);
                     System.out.println(vec_hash);
-
                 }
 
             }
@@ -66,11 +67,14 @@ public class Servidor {
     public static void enviarNotificacion(Oferta oferta, ZMQ.Socket publisher) {
         int zipcode = oferta.getSectorCodigo();
         String sector = oferta.getSector();
+        String titulo = oferta.getTitulo();
         String expe = String.valueOf(oferta.getExperiencia());
         String edad = String.valueOf(oferta.getEdad());
 
-        String mensaje = String.valueOf(zipcode) + " " + sector + " " + expe + " " + edad;
+        String mensaje = String.valueOf(zipcode) + "|" + titulo + "|" + sector + "|" + expe + "|" + edad;
+        System.out.println("INFO: enviando notificacion de oferta");
         publisher.send(mensaje, 0);
+
     }
 
     public static byte[] serialize(Object obj) throws IOException {

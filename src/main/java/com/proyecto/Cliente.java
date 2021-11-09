@@ -20,7 +20,7 @@ public class Cliente {
             // conexion inicial con el filtro
             ZMQ.Socket socket = context.createSocket(SocketType.REQ);
             ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
-            subscriber.connect("tcp://" + ip + ":5556");
+            subscriber.connect("tcp://localhost:5556");
             if (socket.connect("tcp://" + ip + ":2222")) {
                 // creacion de la oferta laboral
                 int opc = 0, opc2 = 0;
@@ -35,7 +35,7 @@ public class Cliente {
                                 byte[] d = serialize(n);
                                 socket.send(d, 0);
                                 String respuesta = socket.recvStr(0);
-//                                System.out.print("\033[H\033[2J");
+                                // System.out.print("\033[H\033[2J");
                                 System.out.flush();
                                 System.out.println("INFO: Respuesta del servidor: " + respuesta);
                             }
@@ -85,23 +85,25 @@ public class Cliente {
         System.out.println("INFO: Escuchadno notificaciones");
         Scanner sc = new Scanner(System.in);
         while (true) {
-            System.out.println("INFO: Entro a el while");
+            // System.out.println("INFO: Entro a el while");
             subscriber.subscribe(filter.getBytes(ZMQ.CHARSET));
+            subscriber.subscribe(filter2.getBytes(ZMQ.CHARSET));
             String string = subscriber.recvStr(0).trim();
             int contador = 0;
             if (!string.isEmpty()) {
-                System.out.println("INFO: llego una nueva oferta de trabajo");
+                // System.out.println("INFO: llego una nueva oferta de trabajo");
                 contador++;
             }
 
-            StringTokenizer sscanf = new StringTokenizer(string, " ");
+            StringTokenizer sscanf = new StringTokenizer(string, "|");
+            String zip = sscanf.nextToken();
             String titulo = sscanf.nextToken();
             String sector = sscanf.nextToken();
             String expe = sscanf.nextToken();
             String edad = sscanf.nextToken();
 
-            if (aspirante.getEdad() == Integer.valueOf(edad)
-                    && aspirante.getAnios_experiencia() == Integer.valueOf(expe)) {
+            if (aspirante.getEdad() >= Integer.parseInt(edad)
+                    && aspirante.getAnios_experiencia() >= Integer.parseInt(expe)) {
                 System.out.println("-------------------------------------");
                 System.out.println("Titulo de oferta: " + titulo);
                 System.out.println("Sector: " + sector);
@@ -128,7 +130,7 @@ public class Cliente {
     public static String ip_filtro() {
         Scanner sc = new Scanner(System.in);
         String ip = "";
-//        System.out.print("\033[H\033[2J");
+        // System.out.print("\033[H\033[2J");
         System.out.flush();
         int opc = ThreadLocalRandom.current().nextInt(1, 2 + 1);
 
@@ -148,7 +150,7 @@ public class Cliente {
 
     public static Integer impresion_menu() {
         Scanner sc = new Scanner(System.in);
-//        System.out.print("\033[H\033[2J");
+        // System.out.print("\033[H\033[2J");
         System.out.flush();
         System.out.println("Menu");
         System.out.println("1). Ingresar como Empleador");
@@ -164,7 +166,7 @@ public class Cliente {
 
     public static Integer impresion_menu_empleador() {
         Scanner sc = new Scanner(System.in);
-//        System.out.print("\033[H\033[2J");
+        // System.out.print("\033[H\033[2J");
         System.out.flush();
         System.out.println("Menu Empleador");
         System.out.println("1). Crear oferta");
@@ -178,7 +180,7 @@ public class Cliente {
 
     public static Integer impresion_menu_aspirante() {
         Scanner sc = new Scanner(System.in);
-//        System.out.print("\033[H\033[2J");
+        // System.out.print("\033[H\033[2J");
         System.out.flush();
         System.out.println("Menu Aspirante");
         System.out.println("1). Ingresar aptitudes");
@@ -282,7 +284,7 @@ public class Cliente {
 
     public static Oferta crear_oferta() {
         Scanner sc = new Scanner(System.in);
-////////////////        System.out.print("\033[H\033[2J");
+        //////////////// System.out.print("\033[H\033[2J");
         System.out.flush();
         String titulo, sector = "", formacion_acade, codigo;
         Integer experiencia, edad, sectorId, formacion_id, sectorCodigo = 0;
@@ -334,12 +336,12 @@ public class Cliente {
             formacion_acade = "Profesional";
         }
         codigo = UUID.randomUUID().toString();
-        System.out.println("Ingrese los años de experiencia del vacante");
+        System.out.println("Ingrese los años minimos de experiencia del vacante");
         experiencia = sc.nextInt();
-        System.out.println("Ingrese la edad del vacante");
+        System.out.println("Ingrese la edad minima del vacante");
         edad = sc.nextInt();
         sc.nextLine();
-//        System.out.print("\033[H\033[2J");
+        // System.out.print("\033[H\033[2J");
         System.out.flush();
 
         Oferta nueva = new Oferta(titulo, sector, codigo, experiencia, edad, formacion_acade, sectorCodigo);

@@ -21,7 +21,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.Cliente">
+  <component name="RunManager" selected="Application.Servidor">
     <configuration name="Cliente" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.proyecto.Cliente" />
       <module name="proyecto_distribuidos" />
@@ -74,8 +74,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Cliente" />
         <item itemvalue="Application.Servidor" />
+        <item itemvalue="Application.Cliente" />
         <item itemvalue="Application.Filtro" />
       </list>
     </recent_temporary>
@@ -94,7 +94,7 @@
       <workItem from="1632512234597" duration="73000" />
       <workItem from="1632753215220" duration="484000" />
       <workItem from="1636225042200" duration="2009000" />
-      <workItem from="1636493569445" duration="537000" />
+      <workItem from="1636493569445" duration="5945000" />
     </task>
     <servers />
   </component>
