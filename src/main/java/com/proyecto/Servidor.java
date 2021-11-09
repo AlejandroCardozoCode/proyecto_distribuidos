@@ -50,6 +50,7 @@ public class Servidor {
                     hash_table.put("Edad", String.valueOf(ofertaRecivida.getEdad()));
                     hash_table.put("Formacion", ofertaRecivida.getFormacion_academica());
                     vec_hash.add(hash_table);
+                    enviarNotificacion(ofertaRecivida,publisher);
 
                     // envio de respuesta a el filtro
                     String respuesta = "satisfactorio";

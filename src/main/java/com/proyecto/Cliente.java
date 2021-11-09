@@ -82,9 +82,10 @@ public class Cliente {
         String filter = String.valueOf(sector1);
         String filter2 = String.valueOf(sector2);
         // Se suscribe con codigo especial que le permitira filtar los
-
+        System.out.println("INFO: Escuchadno notificaciones");
         Scanner sc = new Scanner(System.in);
         while (true) {
+            System.out.println("INFO: Entro a el while");
             subscriber.subscribe(filter.getBytes(ZMQ.CHARSET));
             String string = subscriber.recvStr(0).trim();
             int contador = 0;
