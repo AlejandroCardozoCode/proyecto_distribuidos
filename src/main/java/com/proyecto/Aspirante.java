@@ -8,16 +8,19 @@ public class Aspirante {
     String formacion;
     Integer sector1;
     Integer sector2;
+    String nombre;
 
     public Aspirante() {
     }
 
-    public Aspirante(Integer anios_experiencia, Integer edad, String formacion, Integer sector1, Integer sector2) {
+    public Aspirante(Integer anios_experiencia, Integer edad, String formacion, Integer sector1, Integer sector2,
+            String nombre) {
         this.anios_experiencia = anios_experiencia;
         this.edad = edad;
         this.formacion = formacion;
         this.sector1 = sector1;
         this.sector2 = sector2;
+        this.nombre = nombre;
     }
 
     public Integer getAnios_experiencia() {
@@ -26,6 +29,14 @@ public class Aspirante {
 
     public void setAnios_experiencia(Integer anios_experiencia) {
         this.anios_experiencia = anios_experiencia;
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Integer getEdad() {
@@ -79,7 +90,7 @@ public class Aspirante {
     public String toString() {
         return "{" + " anios_experiencia='" + getAnios_experiencia() + "'" + ", edad='" + getEdad() + "'"
                 + ", formacion='" + getFormacion() + "'" + ", sector1='" + getSector1() + "'" + ", sector2='"
-                + getSector2() + "'" + "}";
+                + getSector2() + "'" + ", nombre='" + getNombre() + "'" + "}";
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.proyecto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Oferta extends Object implements Serializable {
 
@@ -11,6 +12,8 @@ public class Oferta extends Object implements Serializable {
     private Integer edad;
     private String formacion_academica;
     private Integer sectorCodigo;
+    private String estado;
+    private String nombreAspiratne;
 
     public Oferta(String titulo, String sector, String codigo, Integer experiencia, Integer edad,
             String formacion_academica, Integer sectorCodigo) {
@@ -21,10 +24,28 @@ public class Oferta extends Object implements Serializable {
         this.edad = edad;
         this.formacion_academica = formacion_academica;
         this.sectorCodigo = sectorCodigo;
+        this.estado = "disponible";
+        this.nombreAspiratne = "";
     }
 
     public String getTitulo() {
         return this.titulo;
+    }
+
+    public String getNombreAspiratne() {
+        return this.nombreAspiratne;
+    }
+
+    public void setNombreAspiratne(String nombreAspiratne) {
+        this.nombreAspiratne = nombreAspiratne;
+    }
+
+    public String getEstado() {
+        return this.estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Integer getSectorCodigo() {
@@ -77,6 +98,25 @@ public class Oferta extends Object implements Serializable {
 
     public void setFormacion_academica(String formacion_academica) {
         this.formacion_academica = formacion_academica;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Oferta)) {
+            return false;
+        }
+        Oferta oferta = (Oferta) o;
+        return Objects.equals(titulo, oferta.titulo) && Objects.equals(sector, oferta.sector)
+                && Objects.equals(codigo, oferta.codigo) && Objects.equals(experiencia, oferta.experiencia)
+                && Objects.equals(edad, oferta.edad) && Objects.equals(formacion_academica, oferta.formacion_academica)
+                && Objects.equals(sectorCodigo, oferta.sectorCodigo) && Objects.equals(estado, oferta.estado);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(titulo, sector, codigo, experiencia, edad, formacion_academica, sectorCodigo, estado);
     }
 
 }

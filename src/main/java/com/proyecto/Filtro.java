@@ -19,9 +19,9 @@ public class Filtro {
       ZMQ.Socket socketServidor3 = context.createSocket(SocketType.REQ);
       // gestion de conexiones del filtro con los otros servidore y el cliente
       socketCliente.bind("tcp://*:2222");
-      socketServidor2.connect("tcp://25.90.9.233:3333"); //estiben
-      socketServidor.connect("tcp://25.90.3.122:3333"); //PC
-      socketServidor3.connect("tcp://25.0.147.102:3333"); //portatil
+      socketServidor2.connect("tcp://25.90.9.233:3333"); // estiben
+      socketServidor.connect("tcp://25.90.3.122:3333"); // PC
+      socketServidor3.connect("tcp://25.0.147.102:3333"); // portatil
       System.out.println("INFO: Filtro iniciado correctamente");
 
       // el filtro emieza aescuchar las peticiones
@@ -31,13 +31,20 @@ public class Filtro {
         // manejo de la solicitud del cliente
         byte[] peticionCliente = socketCliente.recv();
         String peticion = "numeroSolicitudes";
+        String comprobar_conexion = "conexion";
 
+        if (deserialize(peticionCliente) instanceof String) {
+          String aux = (String) deserialize(peticionCliente);
+          if (aux.equals(comprobar_conexion)) {
+            socketCliente.send(serialize("Ok"));
+          }
+        }
         if (deserialize(peticionCliente) instanceof Oferta) {
           System.out.println("INFO: llego una nueva oferta al filtro");
           Oferta oferta_actual = (Oferta) deserialize(peticionCliente);
           String sector = oferta_actual.getSector();
-          if (sector.equals("Directores y Agentes") || sector.equals("Profesionales, Cientificos y Intelectuales")){
-            System.out.println("INFO: oferta en el sector -> "+  sector);
+          if (sector.equals("Directores y Agentes") || sector.equals("Profesionales, Cientificos y Intelectuales")) {
+            System.out.println("INFO: oferta en el sector -> " + sector);
             System.out.println("INFO: se enviara la oferta al servidor 1");
             socketServidor.send(peticionCliente);
             byte[] servidor = socketServidor.recv();
@@ -51,7 +58,7 @@ public class Filtro {
             socketCliente.send(servidor);
           }
 
-          else if (sector.equals("Vendedor de Comercios")){
+          else if (sector.equals("Vendedor de Comercios")) {
             System.out.println("INFO: se enviara la oferta al servidor 3");
             socketServidor3.send(peticionCliente);
             byte[] servidor = socketServidor3.recv();

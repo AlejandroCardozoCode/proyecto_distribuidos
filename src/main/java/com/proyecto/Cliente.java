@@ -19,8 +19,20 @@ public class Cliente {
             String ip = ip_filtro();
             // conexion inicial con el filtro
             ZMQ.Socket socket = context.createSocket(SocketType.REQ);
+            ZMQ.Socket socket2 = context.createSocket(SocketType.REQ);
+            ZMQ.Socket socketServer = context.createSocket(SocketType.REQ);
+            socket.setSendTimeOut(5000);
+            socket.setReceiveTimeOut(5000);
+            socket2.setSendTimeOut(5000);
+            socket2.setReceiveTimeOut(5000);
+            socketServer.setSendTimeOut(5000);
+            socketServer.setReceiveTimeOut(5000);
+
             ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
+            ZMQ.Socket subscriberEmpleador = context.createSocket(SocketType.SUB);
+            ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
             subscriber.connect("tcp://localhost:5556");
+            socketServer.connect("tcp://" + ip + ":4444");
             if (socket.connect("tcp://" + ip + ":2222")) {
                 // creacion de la oferta laboral
                 int opc = 0, opc2 = 0;
@@ -28,16 +40,50 @@ public class Cliente {
                     opc = impresion_menu();
                     if (opc == 1) {
                         while (opc2 != -1) {
+
+                            String filtro = "contratacion";
+                            subscriberEmpleador.subscribe(filtro.getBytes(ZMQ.CHARSET));
+
                             opc2 = impresion_menu_empleador();
                             if (opc2 == 1) {
                                 // envio de una oferta de trabajo a el filtro
                                 Oferta n = crear_oferta();
                                 byte[] d = serialize(n);
-                                socket.send(d, 0);
-                                String respuesta = socket.recvStr(0);
-                                // System.out.print("\033[H\033[2J");
-                                System.out.flush();
-                                System.out.println("INFO: Respuesta del servidor: " + respuesta);
+                                byte[] comprobacion_conexion = null;
+                                String ip2 = comprobar_conexion(ip, socket);
+                                if (ip2.equals("0")) {
+                                    System.out.println(
+                                            "INFO: No se ha podido establecer conexion con el filtro por defecto, intendando conexion con otro filtro");
+                                    // "25.90.3.122";
+                                    // "25.90.9.233";
+                                    if (ip.equals("25.90.3.122")) {
+                                        socket2.connect("tcp://25.90.9.233:2222");
+                                    } else if (ip.equals("25.90.9.233")) {
+                                        socket2.connect("tcp://25.90.3.122:2222");
+                                    }
+                                    socket2.send(d, 0);
+                                    String respuesta = socket2.recvStr(0);
+                                    // System.out.print("\033[H\033[2J");
+                                    System.out.flush();
+                                    if (respuesta == null) {
+                                        System.out.println(
+                                                "INFO: No se puede establecer conexion con ninguno de los filtros");
+                                    } else {
+                                        System.out.println("INFO: Respuesta del servidor: " + respuesta);
+                                    }
+
+                                } else {
+                                    socket.send(d, 0);
+                                    String respuesta = socket.recvStr(0);
+                                    // System.out.print("\033[H\033[2J");
+                                    System.out.flush();
+                                    if (respuesta == null) {
+                                        System.out.println(
+                                                "INFO: No se puede establecer conexion con ninguno de los filtros");
+                                    } else {
+                                        System.out.println("INFO: Respuesta del servidor: " + respuesta);
+                                    }
+                                }
                             }
                         }
                         opc2 = 0;
@@ -56,7 +102,8 @@ public class Cliente {
                                 System.out.println(aspirante.toString());
                             }
                             if (opc2 == 3) {
-                                notificaciones(subscriber, aspirante.getSector1(), aspirante.getSector2(), aspirante);
+                                notificaciones(subscriber, aspirante.getSector1(), aspirante.getSector2(), aspirante,
+                                        socketServer);
                             }
 
                         }
@@ -78,11 +125,23 @@ public class Cliente {
         }
     }
 
-    public static void notificaciones(ZMQ.Socket subscriber, Integer sector1, Integer sector2, Aspirante aspirante) {
+    public static String comprobar_conexion(String ip, ZMQ.Socket socket) throws IOException {
+
+        byte[] comprobacion_conexion = null;
+        socket.send(serialize("conexion"));
+        comprobacion_conexion = socket.recv();
+        if (comprobacion_conexion == null) {
+            return "0";
+        }
+        return ip;
+    }
+
+    public static void notificaciones(ZMQ.Socket subscriber, Integer sector1, Integer sector2, Aspirante aspirante,
+            ZMQ.Socket socketServidor) throws IOException {
         String filter = String.valueOf(sector1);
         String filter2 = String.valueOf(sector2);
         // Se suscribe con codigo especial que le permitira filtar los
-        System.out.println("INFO: Escuchadno notificaciones");
+        System.out.println("INFO: Escuchando notificaciones");
         Scanner sc = new Scanner(System.in);
         while (true) {
             // System.out.println("INFO: Entro a el while");
@@ -101,11 +160,13 @@ public class Cliente {
             String sector = sscanf.nextToken();
             String expe = sscanf.nextToken();
             String edad = sscanf.nextToken();
+            String idOferta = sscanf.nextToken();
 
             if (aspirante.getEdad() >= Integer.parseInt(edad)
                     && aspirante.getAnios_experiencia() >= Integer.parseInt(expe)) {
                 System.out.println("-------------------------------------");
                 System.out.println("Titulo de oferta: " + titulo);
+
                 System.out.println("Sector: " + sector);
                 System.out.println("Experiencia: " + expe);
                 System.out.println("Edad: " + edad);
@@ -115,6 +176,12 @@ public class Cliente {
 
                 if (respuesta.equals("s")) {
                     System.out.println("INFO: Oferta aceptada");
+                    Contratacion contratacion = new Contratacion(idOferta, aspirante.getNombre());
+                    System.out.println(contratacion);
+                    byte[] conSend = serialize(contratacion);
+                    socketServidor.send(conSend);
+                    String respuesta2 = socketServidor.recvStr(0);
+                    System.out.println(respuesta2);
                 }
                 if (respuesta.equals("n")) {
                     System.out.println("INFO: Oferta rechazada");
@@ -248,10 +315,12 @@ public class Cliente {
 
     public static Aspirante ingresar_aptitudes() {
         Aspirante aspiratne = new Aspirante();
-        String formacion_acade;
+        String formacion_acade, nombre;
         Integer formacion_id, experiencia, edad;
 
         Scanner sc = new Scanner(System.in);
+        System.out.println("Ingrese su nombre");
+        nombre = sc.nextLine();
         System.out.println("Ingrese la formacion del aplicante");
         System.out.println("1). Bachiller");
         System.out.println("2). Tecnico");
@@ -279,6 +348,7 @@ public class Cliente {
         aspiratne.setFormacion(formacion_acade);
         aspiratne.setSector1(0);
         aspiratne.setSector2(0);
+        aspiratne.setNombre(nombre);
         return aspiratne;
     }
 

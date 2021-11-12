@@ -19,10 +19,12 @@ public class Servidor {
             // inicializacion del filtro
             Scanner sc = new Scanner(System.in);
             ZMQ.Socket socket = context.createSocket(SocketType.REP);
+            ZMQ.Socket socketCliente = context.createSocket(SocketType.REP);
             // crear socket del publicador
             ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
             // gestion de conexiones del servidor
             socket.bind("tcp://*:3333");
+            socketCliente.bind("tcp://*:4444");
             publisher.bind("tcp://*:5556");
             publisher.setSendTimeOut(200);
             System.out.println("INFO: Servidor iniciado correctamente");
@@ -31,6 +33,7 @@ public class Servidor {
             while (!Thread.currentThread().isInterrupted()) {
                 // recivir peticiones del filtro
                 byte[] peticion = socket.recv();
+                //byte[] peticionClienteCon = socketCliente.recv();
                 // si la peticioini en por el numero de ofertas almacenadas
                 if (deserialize(peticion) instanceof String) {
                     String aux = (String) deserialize(peticion);
@@ -59,6 +62,24 @@ public class Servidor {
                     enviarNotificacion(ofertaRecivida, publisher);
                     System.out.println(vec_hash);
                 }
+                /*else if (deserialize(peticionClienteCon) instanceof Contratacion) {
+
+                    System.out.println("INFO: llego una solicitud de contratacion");
+                    Contratacion contratacion = (Contratacion) deserialize(peticion);
+                    String idOferta = contratacion.getIdOferta();
+                    String nombreAspirante = contratacion.getNombreCliente();
+
+                    Hashtable<String, String> actual = null;
+                    for (int i = 0; i < vec_hash.size(); i++) {
+                        if (vec_hash.get(i).get("Codigo") == idOferta) {
+                            actual = vec_hash.get(i);
+                        }
+                    }
+                    System.out.println(actual);
+                    socketCliente.send(serialize("Ok"));
+                }
+
+                 */
 
             }
         }
@@ -70,8 +91,10 @@ public class Servidor {
         String titulo = oferta.getTitulo();
         String expe = String.valueOf(oferta.getExperiencia());
         String edad = String.valueOf(oferta.getEdad());
+        String idOferta = oferta.getCodigo();
 
-        String mensaje = String.valueOf(zipcode) + "|" + titulo + "|" + sector + "|" + expe + "|" + edad;
+        String mensaje = String.valueOf(zipcode) + "|" + titulo + "|" + sector + "|" + expe + "|" + edad + "|"
+                + idOferta;
         System.out.println("INFO: enviando notificacion de oferta");
         publisher.send(mensaje, 0);
 
