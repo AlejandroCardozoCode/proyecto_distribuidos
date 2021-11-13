@@ -32,7 +32,7 @@ public class Cliente {
             ZMQ.Socket subscriberEmpleador = context.createSocket(SocketType.SUB);
             ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
             subscriber.connect("tcp://localhost:5556");
-            socketServer.connect("tcp://" + ip + ":4444");
+            socketServer.connect("tcp://" + ip + ":3333");
             if (socket.connect("tcp://" + ip + ":2222")) {
                 // creacion de la oferta laboral
                 int opc = 0, opc2 = 0;
@@ -105,6 +105,9 @@ public class Cliente {
                                 notificaciones(subscriber, aspirante.getSector1(), aspirante.getSector2(), aspirante,
                                         socketServer);
                             }
+                            if (opc2 == 5) {
+                                testcontratacion(socketServer);
+                            }
 
                         }
                         opc2 = 0;
@@ -125,12 +128,25 @@ public class Cliente {
         }
     }
 
+    public static void testcontratacion(ZMQ.Socket socketcont) throws IOException {
+
+        Contratacion contratacion = new Contratacion("aaaaaaaa", "diego");
+        System.out.println(contratacion);
+        byte[] conSend = serialize(contratacion);
+        socketcont.send(conSend);
+        String respuesta2 = socketcont.recvStr(0);
+        System.out.println(respuesta2);
+
+    }
+
     public static String comprobar_conexion(String ip, ZMQ.Socket socket) throws IOException {
 
         byte[] comprobacion_conexion = null;
         socket.send(serialize("conexion"));
         comprobacion_conexion = socket.recv();
         if (comprobacion_conexion == null) {
+            socket.disconnect("tcp://" + ip + ":2222");
+            socket.connect("tcp://" + ip + ":2222");
             return "0";
         }
         return ip;
@@ -164,14 +180,14 @@ public class Cliente {
 
             if (aspirante.getEdad() >= Integer.parseInt(edad)
                     && aspirante.getAnios_experiencia() >= Integer.parseInt(expe)) {
-                System.out.println("-------------------------------------");
+                System.out.println("---------------------------------------------");
                 System.out.println("Titulo de oferta: " + titulo);
 
                 System.out.println("Sector: " + sector);
                 System.out.println("Experiencia: " + expe);
                 System.out.println("Edad: " + edad);
-                System.out.println("-------------------------------------");
-                System.out.println("Desea aceptar esta oferta? (si = s, no = n, salir = e): ");
+                System.out.println("---------------------------------------------");
+                System.out.println("Desea aceptar esta oferta? (si = s, no = n): ");
                 String respuesta = sc.nextLine();
 
                 if (respuesta.equals("s")) {
@@ -182,13 +198,10 @@ public class Cliente {
                     socketServidor.send(conSend);
                     String respuesta2 = socketServidor.recvStr(0);
                     System.out.println(respuesta2);
+                    return;
                 }
                 if (respuesta.equals("n")) {
                     System.out.println("INFO: Oferta rechazada");
-                }
-
-                if (respuesta.equals("e")) {
-                    return;
                 }
             }
         }
