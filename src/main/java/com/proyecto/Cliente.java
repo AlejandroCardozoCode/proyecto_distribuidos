@@ -221,7 +221,7 @@ public class Cliente {
             ip = "25.90.3.122";
             System.out.println("Conectado a el filtro 1");
         } else if (opc == 2) {
-            ip = "25.90.9.233";
+            ip = "25.0.147.102";
             System.out.println("Conectado a el filtro 2");
         }
 
