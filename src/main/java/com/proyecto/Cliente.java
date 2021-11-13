@@ -31,7 +31,7 @@ public class Cliente {
             ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
             ZMQ.Socket subscriberEmpleador = context.createSocket(SocketType.SUB);
             ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
-            subscriber.connect("tcp://localhost:5556");
+            subscriber.connect("tcp://*:5556");
             socketServer.connect("tcp://" + ip + ":3333");
             if (socket.connect("tcp://" + ip + ":2222")) {
                 // creacion de la oferta laboral

@@ -75,8 +75,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Servidor" />
-        <item itemvalue="Application.Cliente" />
         <item itemvalue="Application.Filtro" />
+        <item itemvalue="Application.Cliente" />
       </list>
     </recent_temporary>
   </component>
@@ -97,7 +97,8 @@
       <workItem from="1636493569445" duration="6570000" />
       <workItem from="1636657970979" duration="935000" />
       <workItem from="1636748463703" duration="5011000" />
-      <workItem from="1636821131388" duration="7385000" />
+      <workItem from="1636821131388" duration="7709000" />
+      <workItem from="1636839303080" duration="1219000" />
     </task>
     <servers />
   </component>
