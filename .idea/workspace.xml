@@ -21,7 +21,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.pub">
+  <component name="RunManager" selected="Application.Servidor">
     <configuration name="Cliente" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.proyecto.Cliente" />
       <module name="proyecto_distribuidos" />
@@ -100,11 +100,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Servidor" />
+        <item itemvalue="Application.Filtro" />
         <item itemvalue="Application.pub" />
         <item itemvalue="Application.Cliente" />
         <item itemvalue="Application.sub" />
-        <item itemvalue="Application.Servidor" />
-        <item itemvalue="Application.Filtro" />
       </list>
     </recent_temporary>
   </component>
@@ -128,42 +128,12 @@
       <workItem from="1636821131388" duration="7709000" />
       <workItem from="1636839303080" duration="3128000" />
       <workItem from="1636997089032" duration="9529000" />
+      <workItem from="1637015504425" duration="1820000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/proyecto/Cliente.java</url>
-          <line>70</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/proyecto/Cliente.java</url>
-          <line>186</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/proyecto/Cliente.java</url>
-          <line>188</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/proyecto/Cliente.java</url>
-          <line>182</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/proyecto/Cliente.java</url>
-          <line>185</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/proyecto_distribuidos$Cliente.ic" NAME="Cliente Coverage Results" MODIFIED="1636998247489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

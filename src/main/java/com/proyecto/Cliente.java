@@ -36,12 +36,7 @@ public class Cliente {
             ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
             ZMQ.Socket subscriberEmpleador = context.createSocket(SocketType.SUB);
             ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
-            /*
-            subscriber3.connect("tcp://25.90.9.233:5556");
-            subscriber.connect("tcp://25.90.3.122:5556");
-            subscriber2.connect("tcp://25.0.147.102:5556");
 
-             */
             subscriber.connect("tcp://25.90.3.122:5556");
             subscriber.connect("tcp://25.90.9.233:5556");
             subscriber.connect("tcp://25.0.143.102:5556");
@@ -76,21 +71,15 @@ public class Cliente {
                                     socket.disconnect("tcp://" + ip + ":2222");
                                     socket.close();
                                     socket.connect("tcp://" + ip + ":2222");
-                                    // "25.90.3.122";
-                                    // "25.90.9.233";
                                     if (ip.equals("25.90.3.122")) {
-                                        System.out.println("Entro a el if");
                                         socket2.connect("tcp://25.90.9.233:2222");
-                                        System.out.println("conectando con el filtro con ip: 25.90.9.233");
+                                        System.out.println("INFO: conectando con el filtro con ip: 25.90.9.233");
                                     } else if (ip.equals("25.90.9.233")) {
-                                        System.out.println("Entro a el else");
                                         socket2.connect("tcp://25.90.3.122:2222");
-                                        System.out.println("conectando con el filtro con ip: 25.90.3.122");
+                                        System.out.println("INFO: conectando con el filtro con ip: 25.90.3.122");
                                     }
                                     socket2.send(d, 0);
                                     String respuesta = socket2.recvStr(0);
-                                    // System.out.print("\033[H\033[2J");
-                                    System.out.flush();
                                     if (respuesta == null) {
                                         System.out.println(
                                                 "INFO: No se puede establecer conexion con ninguno de los filtros");
@@ -101,8 +90,6 @@ public class Cliente {
                                 } else {
                                     socket.send(d, 0);
                                     String respuesta = socket.recvStr(0);
-                                    // System.out.print("\033[H\033[2J");
-                                    System.out.flush();
                                     if (respuesta == null) {
                                         System.out.println(
                                                 "INFO: No se puede establecer conexion con ninguno de los filtros");
@@ -113,8 +100,6 @@ public class Cliente {
                                 else {
                                     socket2.send(d, 0);
                                     String respuesta = socket2.recvStr(0);
-                                    // System.out.print("\033[H\033[2J");
-                                    System.out.flush();
                                     if (respuesta == null) {
                                         System.out.println(
                                                 "INFO: No se puede establecer conexion con ninguno de los filtros");
@@ -133,20 +118,13 @@ public class Cliente {
                             opc2 = impresion_menu_aspirante();
                             if (opc2 == 1) {
                                 aspirante = ingresar_aptitudes();
-                                System.out.println(aspirante.toString());
                             }
                             if (opc2 == 2) {
                                 asignar_sectores(aspirante);
-                                System.out.println(aspirante.toString());
                             }
                             if (opc2 == 3) {
-                                notificaciones(subscriber, aspirante.getSector1(), aspirante.getSector2(), aspirante,
-                                        socketServer, socketServer2, socketServer3);
+                                notificaciones(subscriber, aspirante.getSector1(), aspirante.getSector2(), aspirante, socketServer, socketServer2, socketServer3);
                             }
-                            if (opc2 == 5) {
-                                testcontratacion(socketServer);
-                            }
-
                         }
                         opc2 = 0;
                         opc = 0;
@@ -166,16 +144,6 @@ public class Cliente {
         }
     }
 
-    public static void testcontratacion(ZMQ.Socket socketcont) throws IOException {
-
-        Contratacion contratacion = new Contratacion("aaaaaaaa", "diego");
-        System.out.println(contratacion);
-        byte[] conSend = serialize(contratacion);
-        socketcont.send(conSend);
-        String respuesta2 = socketcont.recvStr(0);
-        System.out.println(respuesta2);
-
-    }
 
     public static String comprobar_conexion(String ip, ZMQ.Socket socket) throws IOException {
 
@@ -197,13 +165,11 @@ public class Cliente {
         System.out.println("INFO: Escuchando notificaciones");
         Scanner sc = new Scanner(System.in);
         while (true) {
-            // System.out.println("INFO: Entro a el while");
             subscriber.subscribe(filter.getBytes(ZMQ.CHARSET));
             subscriber.subscribe(filter2.getBytes(ZMQ.CHARSET));
             String string = subscriber.recvStr(0).trim();
             int contador = 0;
             if (!string.isEmpty()) {
-                // System.out.println("INFO: llego una nueva oferta de trabajo");
                 contador++;
             }
 
@@ -236,27 +202,23 @@ public class Cliente {
                     if (sector.equals("Directores y Agentes") || sector.equals("Profesionales, Cientificos y Intelectuales")) {
                         socketServidor.send(conSend);
                         String respuesta2 = socketServidor.recvStr(0);
-                        System.out.println(respuesta2);
+                        System.out.println("INFO: "+respuesta2);
                         return;
                     }
 
-                    else if (sector.equals("Tecnicos y profesionales") || sector.equals("Personal de Apoyo Administrativo")) {
+                    else if (sector.equals("Tecnicos y Profesionales") || sector.equals("Personal de Apoyo Administrativo")) {
                         socketServidor2.send(conSend);
                         String respuesta2 = socketServidor2.recvStr(0);
-                        System.out.println(respuesta2);
+                        System.out.println("INFO: "+respuesta2);
                         return;
                         }
 
                     else if (sector.equals("Vendedor de Comercios")) {
                         socketServidor3.send(conSend);
                         String respuesta2 = socketServidor3.recvStr(0);
-                        System.out.println(respuesta2);
+                        System.out.println("INFO: "+respuesta2);
                         return;
                         }
-                    socketServidor.send(conSend);
-                    String respuesta2 = socketServidor.recvStr(0);
-                    System.out.println(respuesta2);
-                    return;
                 }
                 if (respuesta.equals("n")) {
                     System.out.println("INFO: Oferta rechazada");
@@ -268,8 +230,6 @@ public class Cliente {
     public static String ip_filtro() {
         Scanner sc = new Scanner(System.in);
         String ip = "";
-        // System.out.print("\033[H\033[2J");
-        System.out.flush();
         int opc = ThreadLocalRandom.current().nextInt(1, 2 + 1);
 
         if (opc < 0 || opc > 2) {
@@ -288,14 +248,11 @@ public class Cliente {
 
     public static Integer impresion_menu() {
         Scanner sc = new Scanner(System.in);
-        // System.out.print("\033[H\033[2J");
-        System.out.flush();
         System.out.println("Menu");
         System.out.println("1). Ingresar como Empleador");
         System.out.println("2). Ingresar como Aspirante");
         System.out.println("3). Salir");
         Integer opc = sc.nextInt();
-        System.out.println(opc);
         if (opc == 3) {
             return -1;
         }
@@ -304,8 +261,6 @@ public class Cliente {
 
     public static Integer impresion_menu_empleador() {
         Scanner sc = new Scanner(System.in);
-        // System.out.print("\033[H\033[2J");
-        System.out.flush();
         System.out.println("Menu Empleador");
         System.out.println("1). Crear oferta");
         System.out.println("2). Salir");
@@ -318,8 +273,6 @@ public class Cliente {
 
     public static Integer impresion_menu_aspirante() {
         Scanner sc = new Scanner(System.in);
-        // System.out.print("\033[H\033[2J");
-        System.out.flush();
         System.out.println("Menu Aspirante");
         System.out.println("1). Ingresar aptitudes");
         System.out.println("2). Suscribirse a sectores");
@@ -425,8 +378,6 @@ public class Cliente {
 
     public static Oferta crear_oferta() {
         Scanner sc = new Scanner(System.in);
-        //////////////// System.out.print("\033[H\033[2J");
-        System.out.flush();
         String titulo, sector = "", formacion_acade, codigo;
         Integer experiencia, edad, sectorId, formacion_id, sectorCodigo = 0;
 
@@ -482,8 +433,6 @@ public class Cliente {
         System.out.println("Ingrese la edad minima del vacante");
         edad = sc.nextInt();
         sc.nextLine();
-        // System.out.print("\033[H\033[2J");
-        System.out.flush();
 
         Oferta nueva = new Oferta(titulo, sector, codigo, experiencia, edad, formacion_acade, sectorCodigo);
         return nueva;

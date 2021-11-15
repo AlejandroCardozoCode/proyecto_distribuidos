@@ -108,10 +108,27 @@ public class Servidor {
     }
 
     public static  void impresionOfertas(Vector<Hashtable> vector){
+
         System.out.println("INFO: ofertas almacenadas en este servidor");
+        System.out.println("INFO: Ofertas disponibles");
+        boolean existenAsignadas = false;
         for (int i = 0; i < vector.size(); i++) {
             Hashtable<String, String > actual = vector.get(i);
-           System.out.println("||Codigo: " + actual.get("Codigo") + " ||Titulo: "+ actual.get("Titulo")+ " ||Sector: "+ actual.get("Sector") + " ||Estado: "+ actual.get("Estado")+ " ||Aspirante contratado: " + actual.get("Nombre_aspirante")+ " ||Experiencia minima: " + actual.get("Experiencia") + " ||Edad minima: " + actual.get("Edad"));
+            if (actual.get("Estado").equals("disponible")) {
+                System.out.println("||Codigo: " + actual.get("Codigo") + " ||Titulo: " + actual.get("Titulo") + " ||Sector: " + actual.get("Sector") + " ||Estado: " + actual.get("Estado") + " ||Aspirante contratado: " + actual.get("Nombre_aspirante") + " ||Experiencia minima: " + actual.get("Experiencia") + " ||Edad minima: " + actual.get("Edad"));
+            }
+            if (actual.get("Estado").equals("tomado")) {
+                existenAsignadas = true;
+            }
+        }
+        if (existenAsignadas) {
+            System.out.println("INFO: Ofertas ya asignadas");
+            for (int i = 0; i < vector.size(); i++) {
+                Hashtable<String, String> actual = vector.get(i);
+                if (actual.get("Estado").equals("tomado")) {
+                    System.out.println("||Codigo: " + actual.get("Codigo") + " ||Titulo: " + actual.get("Titulo") + " ||Sector: " + actual.get("Sector") + " ||Estado: " + actual.get("Estado") + " ||Aspirante contratado: " + actual.get("Nombre_aspirante") + " ||Experiencia minima: " + actual.get("Experiencia") + " ||Edad minima: " + actual.get("Edad"));
+                }
+            }
         }
     }
 
