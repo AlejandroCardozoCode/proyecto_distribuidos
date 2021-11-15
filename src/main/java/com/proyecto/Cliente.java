@@ -34,8 +34,6 @@ public class Cliente {
             socketServer3.setSendTimeOut(5000);
             socketServer3.setReceiveTimeOut(5000);
             ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
-            ZMQ.Socket subscriber2 = context.createSocket(SocketType.SUB);
-            ZMQ.Socket subscriber3 = context.createSocket(SocketType.SUB);
             ZMQ.Socket subscriberEmpleador = context.createSocket(SocketType.SUB);
             ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
             /*
@@ -51,6 +49,7 @@ public class Cliente {
             socketServer3.connect("tcp://25.90.9.233:3333"); // estiben
             socketServer.connect("tcp://25.90.3.122:3333"); // PC
             socketServer2.connect("tcp://25.0.147.102:3333"); // portatil
+            boolean conexionOk = true;
             if (socket.connect("tcp://" + ip + ":2222")) {
                 // creacion de la oferta laboral
                 int opc = 0, opc2 = 0;
@@ -68,16 +67,25 @@ public class Cliente {
                                 Oferta n = crear_oferta();
                                 byte[] d = serialize(n);
                                 byte[] comprobacion_conexion = null;
+                                if (conexionOk == true){
                                 String ip2 = comprobar_conexion(ip, socket);
                                 if (ip2.equals("0")) {
-                                    System.out.println(
-                                            "INFO: No se ha podido establecer conexion con el filtro por defecto, intendando conexion con otro filtro");
+                                    conexionOk = false;
+                                    System.out.println("INFO: No se ha podido establecer conexion con el filtro por defecto, intendando conexion con otro filtro");
+                                    System.out.println(ip);
+                                    socket.disconnect("tcp://" + ip + ":2222");
+                                    socket.close();
+                                    socket.connect("tcp://" + ip + ":2222");
                                     // "25.90.3.122";
                                     // "25.90.9.233";
                                     if (ip.equals("25.90.3.122")) {
-                                        socket2.connect("tcp://25.90.9.233:2222");
-                                    } else if (ip.equals("25.90.9.233")) {
+                                        System.out.println("Entro a el if");
+                                        socket2.connect("tcp://25.0.147.102:2222");
+                                        System.out.println("conectando con el filtro con ip: 25.90.9.233");
+                                    } else if (ip.equals("25.0.147.102")) {
+                                        System.out.println("Entro a el else");
                                         socket2.connect("tcp://25.90.3.122:2222");
+                                        System.out.println("conectando con el filtro con ip: 25.90.3.122");
                                     }
                                     socket2.send(d, 0);
                                     String respuesta = socket2.recvStr(0);
@@ -93,6 +101,18 @@ public class Cliente {
                                 } else {
                                     socket.send(d, 0);
                                     String respuesta = socket.recvStr(0);
+                                    // System.out.print("\033[H\033[2J");
+                                    System.out.flush();
+                                    if (respuesta == null) {
+                                        System.out.println(
+                                                "INFO: No se puede establecer conexion con ninguno de los filtros");
+                                    } else {
+                                        System.out.println("INFO: Respuesta del servidor: " + respuesta);
+                                    }
+                                }}
+                                else {
+                                    socket2.send(d, 0);
+                                    String respuesta = socket2.recvStr(0);
                                     // System.out.print("\033[H\033[2J");
                                     System.out.flush();
                                     if (respuesta == null) {
@@ -163,8 +183,7 @@ public class Cliente {
         socket.send(serialize("conexion"));
         comprobacion_conexion = socket.recv();
         if (comprobacion_conexion == null) {
-            socket.disconnect("tcp://" + ip + ":2222");
-            socket.connect("tcp://" + ip + ":2222");
+            socket.close();
             return "0";
         }
         return ip;

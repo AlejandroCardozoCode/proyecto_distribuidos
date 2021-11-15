@@ -1,4 +1,4 @@
-package com.proyecto;
+package com.proyecto.pub.sub;
 
 import java.util.Hashtable;
 import java.util.Vector;
