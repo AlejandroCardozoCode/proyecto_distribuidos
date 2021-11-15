@@ -24,8 +24,6 @@ public class Servidor {
             socket.bind("tcp://*:3333");
             socketCliente.bind("tcp://*:4444");
             publisher.bind("tcp://*:5556");
-            publisher.setSendTimeOut(5000);
-            publisher.setReceiveTimeOut(5000);
             System.out.println("INFO: Servidor iniciado correctamente");
 
             // el Servidor emieza aescuchar las peticiones
@@ -136,6 +134,8 @@ public class Servidor {
 
     public static void enviarNotificacion(Oferta oferta, ZMQ.Socket publisher) {
         int zipcode = oferta.getSectorCodigo();
+        System.out.println("AQUI ESTA");
+        System.out.println(oferta.getSector());
         String sector = oferta.getSector();
         String titulo = oferta.getTitulo();
         String expe = String.valueOf(oferta.getExperiencia());

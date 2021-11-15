@@ -203,7 +203,7 @@ public class Cliente {
             String string = subscriber.recvStr(0).trim();
             int contador = 0;
             if (!string.isEmpty()) {
-                // System.out.println("INFO: llego una nueva oferta de trabajo");
+                 System.out.println("INFO: llego una nueva oferta de trabajo");
                 contador++;
             }
 
