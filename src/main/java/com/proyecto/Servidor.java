@@ -122,9 +122,10 @@ public class Servidor {
         String expe = String.valueOf(oferta.getExperiencia());
         String edad = String.valueOf(oferta.getEdad());
         String idOferta = oferta.getCodigo();
+        String academico = oferta.getFormacion_academica();
 
         String mensaje = String.valueOf(zipcode) + "|" + titulo + "|" + sector + "|" + expe + "|" + edad + "|"
-                + idOferta;
+                + idOferta +"|" + academico ;
         System.out.println("INFO: enviando notificacion de oferta a los aspirtantes aptos");
         publisher.send(mensaje, 0);
 

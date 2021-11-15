@@ -214,9 +214,10 @@ public class Cliente {
             String expe = sscanf.nextToken();
             String edad = sscanf.nextToken();
             String idOferta = sscanf.nextToken();
+            String academica = sscanf.nextToken();
 
             if (aspirante.getEdad() >= Integer.parseInt(edad)
-                    && aspirante.getAnios_experiencia() >= Integer.parseInt(expe)) {
+                    && aspirante.getAnios_experiencia() >= Integer.parseInt(expe) && aspirante.getFormacion().equals(academica)) {
                 System.out.println("---------------------------------------------");
                 System.out.println("Titulo de oferta: " + titulo);
 
