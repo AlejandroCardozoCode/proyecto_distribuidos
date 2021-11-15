@@ -24,6 +24,7 @@ public class Servidor {
             socket.bind("tcp://*:3333");
             socketCliente.bind("tcp://*:4444");
             publisher.bind("tcp://*:5556");
+            publisher.setSendTimeOut(200);
             System.out.println("INFO: Servidor iniciado correctamente");
 
             // el Servidor emieza aescuchar las peticiones
@@ -85,7 +86,6 @@ public class Servidor {
                                         String respuestaCon = "Ha sido contratado exitosamente";
                                         socket.send(respuestaCon.getBytes(), 0);
                                         System.out.println("INFO: el aspirante: "+ nombreAspirante + " ha sido contratado para la oferta con id: " + idOferta);
-                                        impresionOfertas(vec_hash);
                                     }
                                     else{
 
@@ -109,33 +109,14 @@ public class Servidor {
 
     public static  void impresionOfertas(Vector<Hashtable> vector){
         System.out.println("INFO: ofertas almacenadas en este servidor");
-        System.out.println("INFO: Ofertas disponibles");
-        boolean existenAsignadas = false;
         for (int i = 0; i < vector.size(); i++) {
             Hashtable<String, String > actual = vector.get(i);
-            if (actual.get("Estado").equals("disponible")) {
-                System.out.println("||Codigo: " + actual.get("Codigo") + " ||Titulo: " + actual.get("Titulo") + " ||Sector: " + actual.get("Sector") + " ||Estado: " + actual.get("Estado") + " ||Aspirante contratado: " + actual.get("Nombre_aspirante") + " ||Experiencia minima: " + actual.get("Experiencia") + " ||Edad minima: " + actual.get("Edad"));
-            }
-
-            if (actual.get("Estado").equals("tomado")) {
-                existenAsignadas = true;
-            }
-        }
-        if (existenAsignadas) {
-            System.out.println("INFO: Ofertas ya asignadas");
-            for (int i = 0; i < vector.size(); i++) {
-                Hashtable<String, String> actual = vector.get(i);
-                if (actual.get("Estado").equals("tomado")) {
-                    System.out.println("||Codigo: " + actual.get("Codigo") + " ||Titulo: " + actual.get("Titulo") + " ||Sector: " + actual.get("Sector") + " ||Estado: " + actual.get("Estado") + " ||Aspirante contratado: " + actual.get("Nombre_aspirante") + " ||Experiencia minima: " + actual.get("Experiencia") + " ||Edad minima: " + actual.get("Edad"));
-                }
-            }
+           System.out.println("||Codigo: " + actual.get("Codigo") + " ||Titulo: "+ actual.get("Titulo")+ " ||Sector: "+ actual.get("Sector") + " ||Estado: "+ actual.get("Estado")+ " ||Aspirante contratado: " + actual.get("Nombre_aspirante")+ " ||Experiencia minima: " + actual.get("Experiencia") + " ||Edad minima: " + actual.get("Edad"));
         }
     }
 
     public static void enviarNotificacion(Oferta oferta, ZMQ.Socket publisher) {
         int zipcode = oferta.getSectorCodigo();
-        System.out.println("AQUI ESTA");
-        System.out.println(oferta.getSector());
         String sector = oferta.getSector();
         String titulo = oferta.getTitulo();
         String expe = String.valueOf(oferta.getExperiencia());

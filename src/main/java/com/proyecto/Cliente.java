@@ -46,9 +46,9 @@ public class Cliente {
             subscriber.connect("tcp://25.90.9.233:5556");
             subscriber.connect("tcp://25.0.143.102:5556");
 
-            socketServer3.connect("tcp://25.90.9.233:3333"); // estiben
+            socketServer2.connect("tcp://25.90.9.233:3333"); // estiben
             socketServer.connect("tcp://25.90.3.122:3333"); // PC
-            socketServer2.connect("tcp://25.0.147.102:3333"); // portatil
+            socketServer3.connect("tcp://25.0.147.102:3333"); // portatil
             boolean conexionOk = true;
             if (socket.connect("tcp://" + ip + ":2222")) {
                 // creacion de la oferta laboral
@@ -78,13 +78,13 @@ public class Cliente {
                                     socket.connect("tcp://" + ip + ":2222");
                                     // "25.90.3.122";
                                     // "25.90.9.233";
-                                    if (ip.equals("25.90.9.233")) {
+                                    if (ip.equals("25.90.3.122")) {
                                         System.out.println("Entro a el if");
-                                        socket2.connect("tcp://25.0.147.102:2222");
-                                        System.out.println("conectando con el filtro con ip: 25.90.9.233");
-                                    } else if (ip.equals("25.0.147.102")) {
-                                        System.out.println("Entro a el else");
                                         socket2.connect("tcp://25.90.9.233:2222");
+                                        System.out.println("conectando con el filtro con ip: 25.90.9.233");
+                                    } else if (ip.equals("25.90.9.233")) {
+                                        System.out.println("Entro a el else");
+                                        socket2.connect("tcp://25.90.3.122:2222");
                                         System.out.println("conectando con el filtro con ip: 25.90.3.122");
                                     }
                                     socket2.send(d, 0);
@@ -203,7 +203,7 @@ public class Cliente {
             String string = subscriber.recvStr(0).trim();
             int contador = 0;
             if (!string.isEmpty()) {
-                 System.out.println("INFO: llego una nueva oferta de trabajo");
+                // System.out.println("INFO: llego una nueva oferta de trabajo");
                 contador++;
             }
 
@@ -276,7 +276,7 @@ public class Cliente {
             System.out.println("Error valor ingresado no valido");
             System.exit(0);
         } else if (opc == 1) {
-            ip = "25.0.147.102";
+            ip = "25.90.3.122";
             System.out.println("Conectado a el filtro 1");
         } else if (opc == 2) {
             ip = "25.90.9.233";

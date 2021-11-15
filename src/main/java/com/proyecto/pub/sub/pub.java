@@ -19,7 +19,7 @@ public class pub {
 
                 Scanner sc = new Scanner(System.in);
                 int i = sc.nextInt();
-                int zipcode = 10001;
+                int zipcode = 10003;
                 String sector = "Salud";
                 String expe = String.valueOf(2);
 
