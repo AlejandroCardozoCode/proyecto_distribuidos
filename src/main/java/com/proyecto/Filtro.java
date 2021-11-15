@@ -19,9 +19,9 @@ public class Filtro {
       ZMQ.Socket socketServidor3 = context.createSocket(SocketType.REQ);
       // gestion de conexiones del filtro con los otros servidore y el cliente
       socketCliente.bind("tcp://*:2222");
-      socketServidor3.connect("tcp://25.90.9.233:3333"); // estiben
-      socketServidor.connect("tcp://25.90.3.122:3333"); // PC
-      socketServidor2.connect("tcp://25.0.147.102:3333"); // portatil
+      socketServidor2.connect("tcp://25.90.9.233:3333"); // estiben
+      socketServidor3.connect("tcp://25.90.3.122:3333"); // PC
+      socketServidor.connect("tcp://25.0.147.102:3333"); // portatil
       System.out.println("INFO: Filtro iniciado correctamente");
 
       // el filtro emieza aescuchar las peticiones

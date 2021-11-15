@@ -78,13 +78,13 @@ public class Cliente {
                                     socket.connect("tcp://" + ip + ":2222");
                                     // "25.90.3.122";
                                     // "25.90.9.233";
-                                    if (ip.equals("25.90.3.122")) {
+                                    if (ip.equals("25.90.9.233")) {
                                         System.out.println("Entro a el if");
                                         socket2.connect("tcp://25.0.147.102:2222");
                                         System.out.println("conectando con el filtro con ip: 25.90.9.233");
                                     } else if (ip.equals("25.0.147.102")) {
                                         System.out.println("Entro a el else");
-                                        socket2.connect("tcp://25.90.3.122:2222");
+                                        socket2.connect("tcp://25.90.9.233:2222");
                                         System.out.println("conectando con el filtro con ip: 25.90.3.122");
                                     }
                                     socket2.send(d, 0);
@@ -276,10 +276,10 @@ public class Cliente {
             System.out.println("Error valor ingresado no valido");
             System.exit(0);
         } else if (opc == 1) {
-            ip = "25.90.3.122";
+            ip = "25.0.147.102";
             System.out.println("Conectado a el filtro 1");
         } else if (opc == 2) {
-            ip = "25.0.147.102";
+            ip = "25.90.9.233";
             System.out.println("Conectado a el filtro 2");
         }
 
