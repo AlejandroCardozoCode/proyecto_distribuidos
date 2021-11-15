@@ -34,9 +34,13 @@ public class Cliente {
             socketServer3.setSendTimeOut(5000);
             socketServer3.setReceiveTimeOut(5000);
             ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
+            ZMQ.Socket subscriber2 = context.createSocket(SocketType.SUB);
+            ZMQ.Socket subscriber3 = context.createSocket(SocketType.SUB);
             ZMQ.Socket subscriberEmpleador = context.createSocket(SocketType.SUB);
             ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
-            subscriber.connect("tcp://*:5556");
+            subscriber3.connect("tcp://25.90.9.233:5556");
+            subscriber.connect("tcp://25.90.3.122:5556");
+            subscriber2.connect("tcp://25.0.147.102:5556");
             socketServer3.connect("tcp://25.90.9.233:3333"); // estiben
             socketServer.connect("tcp://25.90.3.122:3333"); // PC
             socketServer2.connect("tcp://25.0.147.102:3333"); // portatil

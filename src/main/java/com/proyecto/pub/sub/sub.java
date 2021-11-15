@@ -18,6 +18,8 @@ public class sub {
             ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
             // Conecta el socket a un puerto
             subscriber.connect("tcp://localhost:5556");
+            subscriber.disconnect("tcp://localhost:5556");
+            subscriber.connect("tcp://25.90.3.122:5556");
             // Prueba red domestica
             // subscriber.connect("tcp://192.168.0.14:5556");
 
