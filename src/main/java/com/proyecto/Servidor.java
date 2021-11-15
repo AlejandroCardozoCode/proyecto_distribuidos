@@ -24,7 +24,8 @@ public class Servidor {
             socket.bind("tcp://*:3333");
             socketCliente.bind("tcp://*:4444");
             publisher.bind("tcp://*:5556");
-            publisher.setSendTimeOut(200);
+            publisher.setSendTimeOut(5000);
+            publisher.setReceiveTimeOut(5000);
             System.out.println("INFO: Servidor iniciado correctamente");
 
             // el Servidor emieza aescuchar las peticiones
