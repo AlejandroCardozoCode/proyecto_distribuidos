@@ -24,7 +24,8 @@ public class pub {
                 String expe = String.valueOf(2);
 
                 String mensaje = String.valueOf(zipcode) + " " + sector + " " + expe;
-                publisher.send(mensaje, 0);
+                String mensaje2 = "10001|lsfjklskdjflskj|lskjdflksdjfl lskdjflskdjflskdjf lskjdflksdjfljsldfjsdl|1|1|flksjdflsdjfldsjjjsldjkflsjldjflsdjflsdjfljsldfjlsjf|Bachiller";
+                publisher.send(mensaje2, 0);
             }
         }
     }

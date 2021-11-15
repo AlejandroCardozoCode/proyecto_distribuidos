@@ -100,8 +100,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.pub" />
         <item itemvalue="Application.Cliente" />
+        <item itemvalue="Application.pub" />
         <item itemvalue="Application.sub" />
         <item itemvalue="Application.Servidor" />
         <item itemvalue="Application.Filtro" />
@@ -127,7 +127,7 @@
       <workItem from="1636748463703" duration="5011000" />
       <workItem from="1636821131388" duration="7709000" />
       <workItem from="1636839303080" duration="3128000" />
-      <workItem from="1636997089032" duration="9529000" />
+      <workItem from="1636997089032" duration="11049000" />
     </task>
     <servers />
   </component>

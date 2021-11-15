@@ -46,9 +46,9 @@ public class Cliente {
             subscriber.connect("tcp://25.90.9.233:5556");
             subscriber.connect("tcp://25.0.143.102:5556");
 
-            socketServer3.connect("tcp://25.90.9.233:3333"); // estiben
-            socketServer.connect("tcp://25.90.3.122:3333"); // PC
-            socketServer2.connect("tcp://25.0.147.102:3333"); // portatil
+            socketServer2.connect("tcp://25.90.9.233:3333"); // estiben
+            socketServer3.connect("tcp://25.90.3.122:3333"); // PC
+            socketServer.connect("tcp://25.0.147.102:3333"); // portatil
             boolean conexionOk = true;
             if (socket.connect("tcp://" + ip + ":2222")) {
                 // creacion de la oferta laboral
@@ -198,8 +198,7 @@ public class Cliente {
         Scanner sc = new Scanner(System.in);
         while (true) {
             // System.out.println("INFO: Entro a el while");
-            subscriber.subscribe(filter.getBytes(ZMQ.CHARSET));
-            subscriber.subscribe(filter2.getBytes(ZMQ.CHARSET));
+            subscriber.subscribe("");
             String string = subscriber.recvStr(0).trim();
             int contador = 0;
             if (!string.isEmpty()) {
@@ -216,7 +215,7 @@ public class Cliente {
             String idOferta = sscanf.nextToken();
             String academica = sscanf.nextToken();
 
-            if (aspirante.getEdad() >= Integer.parseInt(edad)
+            if ((zip.equals(aspirante.getSector1())|| zip.equals(aspirante.getSector2())) && aspirante.getEdad() >= Integer.parseInt(edad)
                     && aspirante.getAnios_experiencia() >= Integer.parseInt(expe) && aspirante.getFormacion().equals(academica)) {
                 System.out.println("---------------------------------------------");
                 System.out.println("Titulo de oferta: " + titulo);

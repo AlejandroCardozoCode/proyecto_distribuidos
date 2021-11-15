@@ -146,7 +146,7 @@ public class Servidor {
         String mensaje = String.valueOf(zipcode) + "|" + titulo + "|" + sector + "|" + expe + "|" + edad + "|"
                 + idOferta +"|" + academico ;
         System.out.println("INFO: enviando notificacion de oferta a los aspirtantes aptos");
-        publisher.send(mensaje, 0);
+        System.out.println(publisher.send(mensaje, 0));
 
     }
 
