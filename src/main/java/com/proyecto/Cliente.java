@@ -21,18 +21,25 @@ public class Cliente {
             ZMQ.Socket socket = context.createSocket(SocketType.REQ);
             ZMQ.Socket socket2 = context.createSocket(SocketType.REQ);
             ZMQ.Socket socketServer = context.createSocket(SocketType.REQ);
+            ZMQ.Socket socketServer2 = context.createSocket(SocketType.REQ);
+            ZMQ.Socket socketServer3 = context.createSocket(SocketType.REQ);
             socket.setSendTimeOut(5000);
             socket.setReceiveTimeOut(5000);
             socket2.setSendTimeOut(5000);
             socket2.setReceiveTimeOut(5000);
             socketServer.setSendTimeOut(5000);
             socketServer.setReceiveTimeOut(5000);
-
+            socketServer2.setSendTimeOut(5000);
+            socketServer2.setReceiveTimeOut(5000);
+            socketServer3.setSendTimeOut(5000);
+            socketServer3.setReceiveTimeOut(5000);
             ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
             ZMQ.Socket subscriberEmpleador = context.createSocket(SocketType.SUB);
             ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
             subscriber.connect("tcp://*:5556");
-            socketServer.connect("tcp://" + ip + ":3333");
+            socketServer3.connect("tcp://25.90.9.233:3333"); // estiben
+            socketServer.connect("tcp://25.90.3.122:3333"); // PC
+            socketServer2.connect("tcp://25.0.147.102:3333"); // portatil
             if (socket.connect("tcp://" + ip + ":2222")) {
                 // creacion de la oferta laboral
                 int opc = 0, opc2 = 0;
@@ -103,7 +110,7 @@ public class Cliente {
                             }
                             if (opc2 == 3) {
                                 notificaciones(subscriber, aspirante.getSector1(), aspirante.getSector2(), aspirante,
-                                        socketServer);
+                                        socketServer, socketServer2, socketServer3);
                             }
                             if (opc2 == 5) {
                                 testcontratacion(socketServer);
@@ -153,7 +160,7 @@ public class Cliente {
     }
 
     public static void notificaciones(ZMQ.Socket subscriber, Integer sector1, Integer sector2, Aspirante aspirante,
-            ZMQ.Socket socketServidor) throws IOException {
+            ZMQ.Socket socketServidor, ZMQ.Socket socketServidor2,ZMQ.Socket socketServidor3) throws IOException {
         String filter = String.valueOf(sector1);
         String filter2 = String.valueOf(sector2);
         // Se suscribe con codigo especial que le permitira filtar los
@@ -195,6 +202,26 @@ public class Cliente {
                     Contratacion contratacion = new Contratacion(idOferta, aspirante.getNombre());
                     System.out.println(contratacion);
                     byte[] conSend = serialize(contratacion);
+                    if (sector.equals("Directores y Agentes") || sector.equals("Profesionales, Cientificos y Intelectuales")) {
+                        socketServidor.send(conSend);
+                        String respuesta2 = socketServidor.recvStr(0);
+                        System.out.println(respuesta2);
+                        return;
+                    }
+
+                    else if (sector.equals("Tecnicos y profesionales") || sector.equals("Personal de Apoyo Administrativo")) {
+                        socketServidor2.send(conSend);
+                        String respuesta2 = socketServidor2.recvStr(0);
+                        System.out.println(respuesta2);
+                        return;
+                        }
+
+                    else if (sector.equals("Vendedor de Comercios")) {
+                        socketServidor3.send(conSend);
+                        String respuesta2 = socketServidor3.recvStr(0);
+                        System.out.println(respuesta2);
+                        return;
+                        }
                     socketServidor.send(conSend);
                     String respuesta2 = socketServidor.recvStr(0);
                     System.out.println(respuesta2);
