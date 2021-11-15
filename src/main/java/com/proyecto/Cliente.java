@@ -44,6 +44,9 @@ public class Cliente {
             subscriber2.connect("tcp://25.0.147.102:5556");
 
              */
+            subscriber.connect("tcp://25.90.3.122:5556");
+            subscriber.connect("tcp://25.90.9.233:5556");
+            subscriber.connect("tcp://25.0.143.102:5556");
 
             socketServer3.connect("tcp://25.90.9.233:3333"); // estiben
             socketServer.connect("tcp://25.90.3.122:3333"); // PC
@@ -117,8 +120,8 @@ public class Cliente {
                                 System.out.println(aspirante.toString());
                             }
                             if (opc2 == 3) {
-
-                               // notificaciones(subscriber, aspirante.getSector1(), aspirante.getSector2(), aspirante, socketServer, socketServer2, socketServer3);
+                                notificaciones(subscriber, aspirante.getSector1(), aspirante.getSector2(), aspirante,
+                                        socketServer, socketServer2, socketServer3);
                             }
                             if (opc2 == 5) {
                                 testcontratacion(socketServer);
@@ -168,7 +171,7 @@ public class Cliente {
     }
 
     public static void notificaciones(ZMQ.Socket subscriber, Integer sector1, Integer sector2, Aspirante aspirante,
-            ZMQ.Socket socketServidor, ZMQ.Socket socketServidor2,ZMQ.Socket socketServidor3, String ip) throws IOException {
+            ZMQ.Socket socketServidor, ZMQ.Socket socketServidor2,ZMQ.Socket socketServidor3) throws IOException {
         String filter = String.valueOf(sector1);
         String filter2 = String.valueOf(sector2);
         // Se suscribe con codigo especial que le permitira filtar los
@@ -176,8 +179,6 @@ public class Cliente {
         Scanner sc = new Scanner(System.in);
         while (true) {
             // System.out.println("INFO: Entro a el while");
-
-            subscriber.connect("tcp://"+ip+":5556");
             subscriber.subscribe(filter.getBytes(ZMQ.CHARSET));
             subscriber.subscribe(filter2.getBytes(ZMQ.CHARSET));
             String string = subscriber.recvStr(0).trim();
