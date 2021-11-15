@@ -21,7 +21,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.Filtro">
+  <component name="RunManager" selected="Application.pub">
     <configuration name="Cliente" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.proyecto.Cliente" />
       <module name="proyecto_distribuidos" />
@@ -74,6 +74,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="sub" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.proyecto.pub.sub.sub" />
+      <module name="proyecto_distribuidos" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.proyecto.pub.sub.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -87,10 +100,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.pub" />
+        <item itemvalue="Application.sub" />
         <item itemvalue="Application.Filtro" />
         <item itemvalue="Application.Servidor" />
         <item itemvalue="Application.Cliente" />
-        <item itemvalue="Application.pub" />
       </list>
     </recent_temporary>
   </component>
@@ -113,7 +127,7 @@
       <workItem from="1636748463703" duration="5011000" />
       <workItem from="1636821131388" duration="7709000" />
       <workItem from="1636839303080" duration="3128000" />
-      <workItem from="1636997089032" duration="2052000" />
+      <workItem from="1636997089032" duration="3546000" />
     </task>
     <servers />
   </component>
